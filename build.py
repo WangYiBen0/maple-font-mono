@@ -131,6 +131,11 @@ def parse_args(args: list[str] | None = None):
         action="store_true",
         help="Make CN characters narrow (experimental)",
     )
+    feature_group.add_argument(
+        "--cn-scale-factor",
+        type=float,
+        help="Scale factor for CN glyphs (e.g. 1.1)",
+    )
 
     build_group = parser.add_argument_group("Build Options")
     nf_group = build_group.add_mutually_exclusive_group()
@@ -286,6 +291,8 @@ class FontConfig:
             "use_hinted": False,
             # whether to use pre-instantiated static CN font as base font
             "use_static_base_font": True,
+            # scale factor for CN glyphs
+            "scale_factor": 1.0,
         }
         self.glyph_width = 600
         self.glyph_width_cn_narrow = 1000
@@ -334,9 +341,8 @@ class FontConfig:
         except FileNotFoundError:
             print(f"🚨 Config file not found: {config_file_path}, use default config")
         except json.JSONDecodeError:
-            print(
-                f"❗ Error: Invalid JSON in config file: {config_file_path}, use default config"
-            )
+            print(f"❗ Error: Invalid JSON in config file: {config_file_path}")
+            exit(1)
         except Exception as e:
             print(f"❗ An unexpected error occurred: {e}")
             exit(1)
@@ -374,6 +380,9 @@ class FontConfig:
         if args.cn_narrow:
             self.cn["narrow"] = True
 
+        if args.cn_scale_factor:
+            self.cn["scale_factor"] = args.cn_scale_factor
+
         if args.ttf_only:
             self.ttf_only = True
 
@@ -410,12 +419,15 @@ class FontConfig:
 
     def get_valid_glyph_width_list(self, cn=False):
         if cn:
+            cn = (
+                self.glyph_width_cn_narrow
+                if self.cn["narrow"]
+                else 2 * self.glyph_width
+            )
             return [
                 0,
                 self.glyph_width,
-                self.glyph_width_cn_narrow
-                if self.cn["narrow"]
-                else 2 * self.glyph_width,
+                cn,
             ]
         else:
             return [0, self.glyph_width]
@@ -811,7 +823,9 @@ def get_unique_identifier(
     return f"{font_config.version_str}{beta_str};SUBF;{postscript_name};2024;FL830;{suffix}"
 
 
-def change_glyph_width(font: TTFont, match_width: int, target_width: int):
+def change_glyph_width_or_scale(
+    font: TTFont, match_width: int, target_width: int, scale_factor: float
+):
     font["hhea"].advanceWidthMax = target_width  # type: ignore
     for name in font.getGlyphOrder():
         glyph = font["glyf"][name]  # type: ignore
@@ -822,12 +836,16 @@ def change_glyph_width(font: TTFont, match_width: int, target_width: int):
             font["hmtx"][name] = (target_width, lsb)  # type: ignore
             continue
 
-        delta = round((target_width - width) / 2)
+        glyph.coordinates.scale((scale_factor, scale_factor))
+
+        xMin, yMin, xMax, yMax = glyph.coordinates.calcIntBounds()
+        delta = round(((glyph.xMax - glyph.xMin) - (xMax - xMin)) / 2)
         glyph.coordinates.translate((delta, 0))
+
         glyph.xMin, glyph.yMin, glyph.xMax, glyph.yMax = (
             glyph.coordinates.calcIntBounds()
         )
-        font["hmtx"][name] = (target_width, lsb + delta)  # type: ignore
+        font["hmtx"][name] = (width, lsb + delta)  # type: ignore
 
 
 def update_font_names(
@@ -1117,11 +1135,21 @@ def build_cn(f: str, font_config: FontConfig, build_option: BuildOption):
         freeze_config=font_config.feature_freeze,
     )
 
-    if font_config.cn["narrow"]:
-        change_glyph_width(
+    target_width = (
+        font_config.glyph_width_cn_narrow if font_config.cn["narrow"] else None
+    )
+    scale_factor = (
+        font_config.cn["scale_factor"]
+        if font_config.cn["scale_factor"] != 1.0
+        else None
+    )
+    if target_width or scale_factor:
+        match_width = 2 * font_config.glyph_width
+        change_glyph_width_or_scale(
             font=cn_font,
-            match_width=2 * font_config.glyph_width,
-            target_width=font_config.glyph_width_cn_narrow,
+            match_width=match_width,
+            target_width=target_width or match_width,
+            scale_factor=scale_factor or 1,
         )
 
     # https://github.com/subframe7536/maple-font/issues/239
