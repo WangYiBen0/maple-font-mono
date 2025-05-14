@@ -599,7 +599,9 @@ OpenType Feature 可以控制字体的内置变体和连字。您可以通过修
 
 #### 缩小中文字体的间距
 
-如果您觉得中文字符的间距**过大**，有一个**实验性**的构建选项 `cn.narrow` 或 参数 `--cn-narrow` 可以缩小间距。您可以在 [#249](https://github.com/subframe7536/maple-font/issues/249) 中查看效果并跟踪问题。
+如果您觉得中文字符的间距**过大**，有一个构建选项 `cn.narrow` 或 命令行参数 `--cn-narrow` 可以缩小间距，但是这将让字体无法被识别为等宽字体。
+
+您可以在 [#249](https://github.com/subframe7536/maple-font/issues/249#issuecomment-2871260476) 中查看效果。
 
 #### GitHub 镜像
 
@@ -636,9 +638,9 @@ Feature Options:
   --no-hinted           在 NF / CN / NF-CN 中使用 unhinted 字体作为基础字体
   --liga                保留所有连字（默认）
   --no-liga             删除所有连字
-  --cn-narrow           减小中文字形间距（实验性）
+  --cn-narrow           减小中文/日文字形间距（同时会让系统无法识别为等宽字体）
   --cn-scale-factor CN_SCALE_FACTOR
-                        中文字形的缩放因子（例如 1.1）
+                        中文/日文字形的缩放因子（例如 1.1）
 
 Build Options:
   --nerd-font           构建 Nerd-Font 版本（默认）
@@ -648,7 +650,7 @@ Build Options:
   --cn-both             同时构建 `Maple Mono CN` 和 `Maple Mono NF CN`。必须启用
                         Nerd-Font 版本
   --ttf-only            仅构建 TTF 格式
-  --least-styles        仅构建常规 / 粗体 / 斜体 / 粗体斜体样式
+  --least-styles        仅构建 常规 / 粗体 / 斜体 / 粗斜体 样式
   --cache               重用 TTF、OTF 和 Woff2 格式的字体缓存
   --cn-rebuild          重新静态化可变的中文基字
   --archive             构建带有配置和许可的字体压缩包。如果带有 `--cache`
