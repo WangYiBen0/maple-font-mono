@@ -2,6 +2,7 @@
 
 <p align="center">
   <a href="https://trendshift.io/repositories/13165" target="_blank"><img src="https://trendshift.io/api/badge/repositories/13165" alt="subframe7536%2Fmaple-font | Trendshift" style="width: 250px; height: 55px;" width="250" height="55"/></a>
+  <a href="https://hellogithub.com/repository/0601f355bd824d88b58f1af3066c486a" target="_blank"><img src="https://api.hellogithub.com/v1/widgets/recommend.svg?rid=0601f355bd824d88b58f1af3066c486a&claim_uid=AO0yWRQ48ITGNqK" alt="Featured｜HelloGitHub" style="width: 250px; height: 54px;" width="250" height="54" /></a>
 </p>
 <p align="center">
   <img alt="GitHub Repo Stars" src="https://img.shields.io/github/stars/subframe7536/maple-font">
@@ -480,9 +481,6 @@ fonts.packages = with pkgs; [
 
 See in [document](./source/features/README.md) or try it in [Playground](https://font.subf.dev/en/playground)
 
-> [!note]
-> The web tool for custom build is under development.
-
 ## Naming FAQ
 
 ### Features
@@ -511,12 +509,15 @@ See in [document](./source/features/README.md) or try it in [Playground](https:/
 - Why there exists `-AutoHint` and `-unhinted` suffix?
   - for backward compatibility, I keep the original naming scheme. `-AutoHint` is only used for `TTF` format.
 
-
 ## Custom Build
 
 The [`config.json`](./config.json) file is used to configure the build process. Checkout the [schema](./source/schema.json) or [document](./source/features/README.md) for more details.
 
 There also have some [command line options](#build-script-usage) for customizing the build process. Cli options have higher priority than options in `config.json`.
+
+### Build In Browser
+
+Go to [Playground](https://font.subf.dev/en/playground), and click "Custom Build" button in the bottom left corner
 
 ### Use Github Actions
 
@@ -574,6 +575,8 @@ cv01, cv02, cv33, cv34, cv35, cv36, cv61, cv62, ss05, ss06, ss07, ss08
 ```
 <!-- NORMAL -->
 
+[Online Preview](https://font.subf.dev/en/playground?normal)
+
 #### Font Feature Freeze
 
 There are three kinds of options for feature freeze ([Why](https://github.com/subframe7536/maple-font/issues/233#issuecomment-2410170270)):
@@ -616,8 +619,8 @@ By enabling `cv99`, all Chinese punctuation marks will be centred. See more deta
 usage: build.py [-h] [-v] [-d] [--debug] [-n] [--feat FEAT] [--apply-fea-file]
                 [--hinted | --no-hinted] [--liga | --no-liga] [--cn-narrow]
                 [--cn-scale-factor CN_SCALE_FACTOR] [--nerd-font | --no-nerd-font]
-                [--cn | --no-cn] [--cn-both] [--ttf-only] [--least-styles] [--cache]
-                [--cn-rebuild] [--archive]
+                [--cn | --no-cn] [--cn-both] [--ttf-only] [--least-styles]
+                [--font-patcher] [--cache] [--cn-rebuild] [--archive]
 
 ✨ Builder and optimizer for Maple Mono
 
@@ -628,17 +631,18 @@ options:
   --debug               Add `Debug` suffix to family name and faster build
 
 Feature Options:
-  -n, --normal          Use normal preset, just like `JetBrains Mono` with slashed zero
+  -n, --normal          Use normal preset, just like `JetBrains Mono` with slashed
+                        zero
   --feat FEAT           Freeze font features, splited by `,` (e.g. `--feat
                         zero,cv01,ss07,ss08`). No effect on variable format
-  --apply-fea-file      Load feature file from `source/features/{regular,italic}.fea` to
-                        variable font
+  --apply-fea-file      Load feature file from `source/features/{regular,italic}.fea`
+                        to variable font
   --hinted              Use hinted font as base font in NF / CN / NF-CN (default)
   --no-hinted           Use unhinted font as base font in NF / CN / NF-CN
   --liga                Preserve all the ligatures (default)
   --no-liga             Remove all the ligatures
-  --cn-narrow           Make CN / JP characters narrow (And the font cannot be recogized
-                        as monospaced font)
+  --cn-narrow           Make CN / JP characters narrow (And the font cannot be
+                        recogized as monospaced font)
   --cn-scale-factor CN_SCALE_FACTOR
                         Scale factor for CN / JP glyphs (e.g. 1.1)
 
@@ -651,10 +655,11 @@ Build Options:
                         version must be enabled
   --ttf-only            Only build TTF format
   --least-styles        Only build Regular / Bold / Italic / BoldItalic style
+  --font-patcher        Force the use of Nerd Font Patcher to build NF format
   --cache               Reuse font cache of TTF, OTF and Woff2 formats
   --cn-rebuild          Reinstantiate variable CN base font
   --archive             Build font archives with config and license. If has `--cache`
-                        flag, only archive Nerd-Font and CN formats
+                        flag, only archive NF and CN formats
 ```
 
 ## Development

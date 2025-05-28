@@ -2,6 +2,7 @@
 
 <p align="center">
   <a href="https://trendshift.io/repositories/13165" target="_blank"><img src="https://trendshift.io/api/badge/repositories/13165" alt="subframe7536%2Fmaple-font | Trendshift" style="width: 250px; height: 55px;" width="250" height="55"/></a>
+  <a href="https://hellogithub.com/repository/0601f355bd824d88b58f1af3066c486a" target="_blank"><img src="https://api.hellogithub.com/v1/widgets/recommend.svg?rid=0601f355bd824d88b58f1af3066c486a&claim_uid=AO0yWRQ48ITGNqK" alt="Featured｜HelloGitHub" style="width: 250px; height: 54px;" width="250" height="54" /></a>
 </p>
 <p align="center">
   <img alt="GitHub Repo Stars" src="https://img.shields.io/github/stars/subframe7536/maple-font">
@@ -481,9 +482,6 @@ fonts.packages = with pkgs; [
 
 [ドキュメント](./source/features/README.md)を参照するか、[プレイグラウンド](https://font.subf.dev/en/playground)で試してください。
 
-> [!note]
-> カスタムビルド用の Web ツールは開発中です。
-
 ## 命名に関する FAQ
 
 ### 特徴
@@ -512,12 +510,15 @@ fonts.packages = with pkgs; [
 - なぜ `-AutoHint` と `-unhinted` サフィックスが存在するのですか？
   - 後方互換性のために、元の命名スキームを保持しています。`-AutoHint` は `TTF` 形式にのみ使用されます。
 
-
 ## カスタムビルド
 
 [`config.json`](./config.json)ファイルはビルドプロセスを構成するために使用されます。詳細については、[スキーマ](./source/schema.json)または[ドキュメント](./source/features/README.md)を参照してください。
 
 ビルドプロセスをカスタマイズするための[コマンドラインオプション](#build-script-usage)もいくつかあります。CLI オプションは `config.json` のオプションよりも優先されます。
+
+### ブラウザで構築する
+
+[プレイグラウンド](https://font.subf.dev/en/playground)に行く，左下隅の「Custom Build」ボタンをクリックしてください
 
 ### Github Actions を使用する
 
@@ -538,7 +539,6 @@ git clone https://github.com/subframe7536/maple-font --depth 1 -b variable
 docker build -t maple-font .
 docker run -v "$(pwd)/fonts:/app/fonts" -e BUILD_ARGS="--normal" maple-font
 ```
-
 
 ### ローカルビルド
 
@@ -575,6 +575,8 @@ python build.py
 cv01, cv02, cv33, cv34, cv35, cv36, cv61, cv62, ss05, ss06, ss07, ss08
 ```
 <!-- NORMAL -->
+
+[オンラインプレビュー](https://font.subf.dev/en/playground?normal)
 
 #### フォント機能のフリーズ
 
@@ -618,8 +620,8 @@ CN バージョンはデフォルトで無効になっています。`python bui
 usage: build.py [-h] [-v] [-d] [--debug] [-n] [--feat FEAT] [--apply-fea-file]
                 [--hinted | --no-hinted] [--liga | --no-liga] [--cn-narrow]
                 [--cn-scale-factor CN_SCALE_FACTOR] [--nerd-font | --no-nerd-font]
-                [--cn | --no-cn] [--cn-both] [--ttf-only] [--least-styles] [--cache]
-                [--cn-rebuild] [--archive]
+                [--cn | --no-cn] [--cn-both] [--ttf-only] [--least-styles]
+                [--font-patcher] [--cache] [--cn-rebuild] [--archive]
 
 ✨ Builder and optimizer for Maple Mono
 
@@ -654,10 +656,11 @@ Build Options:
                         Nerd-Fontバージョンが有効である必要があります
   --ttf-only            TTF形式のみをビルド
   --least-styles        通常の / 太字 / 斜体 / 太字斜体スタイルのみを構築する
+  --font-patcher        NF形式を構築するためにNerd Font Patcherの使用を強制する
   --cache               TTF、OTF、Woff2形式のフォントキャッシュを再利用
   --cn-rebuild          CNベースフォントを再インスタンス化
   --archive             設定とライセンスを含むフォントアーカイブをビルド。
-                        `--cache` フラグがある場合、Nerd-FontとCN形式のみをアーカイブ
+                        `--cache` フラグがある場合、NFとCN形式のみをアーカイブ
 ```
 
 ## クレジット
