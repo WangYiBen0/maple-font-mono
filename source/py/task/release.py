@@ -50,28 +50,9 @@ def rename_woff_files(dir: str, fn: Callable[[str], str | None]):
             print(f"Renamed: {filename} -> {new_name}")
 
 
-def parse_tag(tag: str, beta: str):
-    """
-    Parse the tag from the command line arguments.
-    Format: v7.0[-beta3]
-    """
-
-    if not tag.startswith("v"):
-        tag = f"v{tag}"
-
-    match = re.match(r"^v(\d+)\.(\d+)$", tag)
-    if not match:
-        raise ValueError(f"Invalid tag: {tag}, expected format: v7.0")
-
-    major, minor = match.groups()
-    # Remove leading zero from the minor version if necessary
-    minor = str(int(minor))
-    tag = f"v{major}.{minor}"
-
-    if beta:
-        tag += "-" if beta.startswith("beta") else "-beta" + beta
-
-    return tag
+def parse_tag(type: str):
+    out = os.popen(f"uv version --bump {type}").readline()
+    return "v" + out.split(" ")[-1][:-1]
 
 
 def update_build_script_version(script_path: str, tag: str):
@@ -110,8 +91,8 @@ def write_unicode_map_json(font_path: str, output: str):
     font.close()
 
 
-def release(tag: str, beta: str, dry: bool):
-    tag = parse_tag(tag, beta)
+def release(type: str, dry: bool):
+    tag = parse_tag(type)
     # prompt and wait for user input
     choose = input(f"{'[DRY] ' if dry else ''}Tag {tag}? (Y or n) ")
     if choose != "" and choose.lower() != "y":
@@ -150,4 +131,4 @@ def release(tag: str, beta: str, dry: bool):
     if dry:
         print("Dry run")
     else:
-        git_release_commit(tag, [script_path, "woff2", dep_file])
+        git_release_commit(tag, [script_path, "woff2", dep_file, "pyproject.toml"])

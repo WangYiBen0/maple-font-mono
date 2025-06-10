@@ -3,12 +3,11 @@ from source.py.feature.calt import (
     asciitilde,
     cross,
     equal_arrow,
-    equals,
     escape,
     hyphen_arrow,
     italic,
-    lines,
     markup_like,
+    pipe,
     tag,
     whitespace,
 )
@@ -21,12 +20,11 @@ def get_calt_lookup(
         whitespace.get_lookup(cls_var),
         asciitilde.get_lookup(),
         cross.get_lookup(cls_hex_letter),
+        markup_like.get_lookup(),
         equal_arrow.get_lookup(cls_var),
-        equals.get_lookup(),
         escape.get_lookup(),
         hyphen_arrow.get_lookup(),
-        lines.get_lookup(),
-        markup_like.get_lookup(),
+        pipe.get_lookup(),
         tag.get_lookup(cls_var),
     ]
 

@@ -39,6 +39,11 @@
       "description": "Whether to enable ligature.\nIf set to false, all the ligatures will be removed and 'ssXX' options in 'feature_freeze' will no longer effect",
       "default": true
     },
+    "enable_ligature": {
+      "type": "boolean",
+      "description": "Alias of \"ligature\"",
+      "default": true
+    },
     "feature_freeze": {
       "type": "object",
       "description": "Freeze some font features (No effect on Variable font) \n enable: Move ligature rules to `calt`, which will enable the ligatures without setting up `cvXX` / `ssXX` / `zero` in font features config, just as default ligatures \n disable: Remove the ligature rules in `cvXX` / `ssXX` / `zero`, which will no longer effect, even if you enable it manually \n ignore: Do nothing",
@@ -131,6 +136,14 @@
           "description": "[v7.1] Alternative '<=' in arrow style",
           "$ref": "#/definitions/freeze_options"
         },
+        "cv64": {
+          "description": "[v7.3] Alternative '<=' and '>=' with horizen bottom bar",
+          "$ref": "#/definitions/freeze_options"
+        },
+        "cv65": {
+          "description": "[v7.3] Alternative '&' in handwriting style",
+          "$ref": "#/definitions/freeze_options"
+        },
         "cv96": {
           "description": "[v7.0] Full width quotes ('\u201c' / '\u201d' / '\u2018' / '\u2019')",
           "$ref": "#/definitions/freeze_options"
@@ -176,7 +189,7 @@
           "$ref": "#/definitions/freeze_options"
         },
         "ss08": {
-          "description": "[v7.0] Double headed arrows and reverse arrows ligatures ('>>=', '-<<', '->>', '>-' ...)",
+          "description": "[v7.0] Double headed arrows and reverse arrows ligatures ('>>=', '-<<', '->>', '>>-' ...)",
           "$ref": "#/definitions/freeze_options"
         },
         "ss09": {
@@ -298,8 +311,11 @@
           "default": true
         },
         "scale_factor": {
-          "type": "number",
-          "description": "Scale factor for CN glyphs (default: 1.0)",
+          "type": [
+            "number",
+            "array"
+          ],
+          "description": "Scale factor for CN / JP glyphs with <factor> or [<width_factor>,<height_factor>](e.g. 1.1 or [1.2, 1.1])",
           "default": 1.0
         }
       },

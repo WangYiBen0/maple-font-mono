@@ -20,7 +20,7 @@ cffi==1.17.1 ; platform_python_implementation != 'CPython'
     # via brotlicffi
 cffsubr==0.3.0
     # via foundrytools-cli
-click==8.1.8
+click==8.2.1
     # via foundrytools-cli
 colorama==0.4.6 ; sys_platform == 'win32'
     # via
@@ -41,11 +41,11 @@ fontmath==0.9.4
     #   fontparts
     #   mutatormath
     #   ufoprocessor
-fontparts==0.12.5
+fontparts==0.12.7
     # via ufoprocessor
 fontpens==0.2.4
     # via defcon
-fonttools==4.57.0
+fonttools==4.58.1
     # via
     #   afdko
     #   booleanoperations
@@ -64,7 +64,7 @@ foundrytools-cli==1.1.22
     # via maple-font
 fs==2.4.16
     # via fonttools
-glyphslib==6.10.1
+glyphslib==6.10.2
     # via maple-font
 loguru==0.7.3
     # via foundrytools-cli
@@ -88,10 +88,14 @@ pycparser==2.22 ; platform_python_implementation != 'CPython'
     # via cffi
 pygments==2.19.1
     # via rich
+python-minifier==2.11.3
+    # via maple-font
 rich==14.0.0
     # via foundrytools-cli
 setuptools==80.0.0
-    # via fs
+    # via
+    #   fs
+    #   maple-font
 six==1.17.0
     # via fs
 skia-pathops==0.8.0.post2

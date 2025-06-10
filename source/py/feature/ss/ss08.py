@@ -7,8 +7,8 @@ def ss08_subst():
         ast.subst_liga(
             "<<-",
             target=ast.gly("<<-", ".ss08"),
-            ign_prefix="<",
-            ign_suffix="-",
+            ign_prefix=ast.cls("<", "-"),
+            ign_suffix=ast.cls("<", ">", "-"),
             extra_rules=[
                 ast.subst(ast.SPC, ast.gly("<<"), "-", ast.SPC),
             ],
@@ -16,8 +16,8 @@ def ss08_subst():
         ast.subst_liga(
             ">>-",
             target=ast.gly(">>-", ".ss08"),
-            ign_prefix=">",
-            ign_suffix="-",
+            ign_prefix=ast.cls(">", "-"),
+            ign_suffix=ast.cls("-", ">", "<"),
             extra_rules=[
                 ast.subst(ast.SPC, ast.gly(">>"), "-", ast.SPC),
             ],
@@ -25,8 +25,8 @@ def ss08_subst():
         ast.subst_liga(
             "<<=",
             target=ast.gly("<<=", ".ss08"),
-            ign_prefix="<",
-            ign_suffix="=",
+            ign_prefix=ast.cls("=", "<"),
+            ign_suffix=ast.cls("=", ">", "<"),
             extra_rules=[
                 ast.subst(ast.SPC, ast.gly("<<"), "=", ast.SPC),
             ],
@@ -34,8 +34,8 @@ def ss08_subst():
         ast.subst_liga(
             ">>=",
             target=ast.gly(">>=", ".ss08"),
-            ign_prefix=">",
-            ign_suffix="=",
+            ign_prefix=ast.cls(">", "="),
+            ign_suffix=ast.cls("=", ">", "<"),
             extra_rules=[
                 ast.subst(ast.SPC, ast.gly(">>"), "=", ast.SPC),
             ],
@@ -43,8 +43,8 @@ def ss08_subst():
         ast.subst_liga(
             "-<<",
             target=ast.gly("-<<", ".ss08"),
-            ign_prefix="-",
-            ign_suffix="<",
+            ign_prefix=ast.cls("-", "<", ">"),
+            ign_suffix=ast.cls("<", "-"),
             extra_rules=[
                 ast.subst(
                     [ast.SPC, ast.SPC],
@@ -58,8 +58,8 @@ def ss08_subst():
         ast.subst_liga(
             "->>",
             target=ast.gly("->>", ".ss08"),
-            ign_prefix="-",
-            ign_suffix=">",
+            ign_prefix=ast.cls("-", ">", "<"),
+            ign_suffix=ast.cls(">", "-"),
             extra_rules=[
                 ast.subst(
                     [ast.SPC, ast.SPC],
@@ -73,10 +73,10 @@ def ss08_subst():
         ast.subst_liga(
             "=<<",
             target=ast.gly("=<<", ".ss08"),
-            ign_prefix="=",
-            ign_suffix="<",
+            ign_prefix=ast.cls("=", "<", ">"),
+            ign_suffix=ast.cls("<", "="),
             extra_rules=[
-                ast.ignore(["(", cls_question], "=", ["<", "<"]),
+                ast.ign(["(", cls_question], "=", ["<", "<"]),
                 ast.subst(
                     [ast.SPC, ast.SPC],
                     ast.gly("<<"),
@@ -89,10 +89,10 @@ def ss08_subst():
         ast.subst_liga(
             "=>>",
             target=ast.gly("=>>", ".ss08"),
-            ign_prefix="=",
-            ign_suffix=">",
+            ign_prefix=ast.cls("=", ">", "<"),
+            ign_suffix=ast.cls(">", "="),
             extra_rules=[
-                ast.ignore(["(", cls_question], "=", [">", ">"]),
+                ast.ign(["(", cls_question], "=", [">", ">"]),
                 ast.subst(
                     [ast.SPC, ast.SPC],
                     ast.gly(">>"),
@@ -102,23 +102,11 @@ def ss08_subst():
                 ast.subst(None, "=", [ast.SPC, ast.gly(">>")], ast.SPC),
             ],
         ),
-        ast.subst_liga(
-            "-<",
-            target=ast.gly("-<", ".ss08"),
-            ign_prefix=ast.cls(">", "<", "-"),
-            ign_suffix=ast.cls("<", "/", cls_question),
-        ),
-        ast.subst_liga(
-            ">-",
-            target=ast.gly(">-", ".ss08"),
-            ign_prefix=">",
-            ign_suffix=ast.cls("-", ">", "<"),
-        ),
     ]
 
 
 ss08_name = (
-    "Double headed arrows and reverse arrows ligatures (`>>=`, `-<<`, `->>`, `>-` ...)"
+    "Double headed arrows and reverse arrows ligatures (`>>=`, `-<<`, `->>`, `>>-` ...)"
 )
 ss08_feat = ast.StylisticSet(
     id=8, desc=ss08_name, content=ss08_subst(), version="7.0", sample=">>="

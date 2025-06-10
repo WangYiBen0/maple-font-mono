@@ -1,7 +1,11 @@
 from source.py.feature import ast
+from source.py.feature.calt._infinite_utils import use_infinite
 
 
 def get_lookup():
+    start = ast.gly_seq("~", "sta")
+    mid = ast.gly_seq("~", "mid")
+    end = ast.gly_seq("~", "end")
     return [
         ast.subst_liga(
             "<~",
@@ -48,4 +52,15 @@ def get_lookup():
             ign_prefix="~",
             ign_suffix="@",
         ),
+        ast.Lookup(
+            "infinite_asciitilde",
+            "~~~~~~~",
+            [
+                ast.subst(ast.cls(start, mid), "~", "~", mid),
+                ast.subst(ast.cls(start, mid), "~", None, end),
+                ast.subst(None, "~", "~", start),
+            ],
+        )
+        if use_infinite()
+        else None,
     ]

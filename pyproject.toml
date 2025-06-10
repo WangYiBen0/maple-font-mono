@@ -1,11 +1,12 @@
 [project]
 name = "maple-font"
-version = "0.1.0"
+version = "7.3"
 description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
-    "foundrytools-cli>=1.1.22",
+    "foundrytools-cli==1.1.22",
     "glyphslib>=6.10.1",
     "python-minifier>=2.11.3",
+    "setuptools==80.0.0"
 ]

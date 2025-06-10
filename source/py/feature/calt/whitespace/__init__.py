@@ -26,14 +26,14 @@ def get_base_lookup():
             ign_prefix="!",
             ign_suffix="!",
             extra_rules=[
-                ast.ignore(["(", cls_question], "!", "!"),
-                ast.ignore(["(", cls_question, "<"], "!", "!"),
+                ast.ign(["(", cls_question], "!", "!"),
+                ast.ign(["(", cls_question, "<"], "!", "!"),
             ],
         ),
         ast.subst_liga(
             "||",
-            ign_prefix=ast.cls("-", "|", "[", "<"),
-            ign_suffix=ast.cls("|", "]", ">", "-", "="),
+            ign_prefix=ast.cls("|", "[", "<"),
+            ign_suffix=ast.cls("|", "]", ">"),
         ),
         ast.subst_liga(
             2 * [cls_question.use()],
@@ -93,27 +93,6 @@ def get_base_lookup():
             "+++",
             ign_prefix="+",
             ign_suffix="+",
-        ),
-        ast.subst_liga(
-            "--",
-            ign_prefix=ast.cls("<", "-"),
-            ign_suffix=ast.cls("-", ">"),
-            extra_rules=[
-                ast.ignore(["<", ast.cls("#", "!")], "-", "-"),
-                ast.ignore(
-                    ["(", cls_question, "<", "!"],
-                    "-",
-                    "-",
-                ),
-            ],
-        ),
-        ast.subst_liga(
-            "---",
-            ign_prefix="-",
-            ign_suffix="-",
-            extra_rules=[
-                ast.ignore("<", "-", ["-", "-", ">"]),
-            ],
         ),
         ast.subst_liga(
             ";;",

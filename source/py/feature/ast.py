@@ -277,13 +277,12 @@ def gly(g: str | Clazz | Sequence[str | Clazz], suffix: str = "", overwrite=Fals
     return __gly(g) + suffix
 
 
-def gly_var(g: str, variant: str):
+def gly_seq(g: str | list[str], variant: str):
     """
-    Normalize glyph names with variant
-    >>> gly_var("{", "start")
-    "braceleft_start.liga"
+    >>> gly_seq("{", "sta")
+    "braceleft.sta.seq"
     """
-    return gly(g, f"_{variant}.liga", True)
+    return gly(g, f".{variant}.seq", True)
 
 
 def cls(glyphs: str | Clazz | Sequence[str | Clazz], *rest: str | Clazz) -> str:
@@ -395,8 +394,8 @@ def subst_liga(
     surround: list[
         tuple[Sequence[str | Clazz] | None, Sequence[str | Clazz] | None]
     ] = [],
-    ign_prefix: str | Clazz | list = [],
-    ign_suffix: str | Clazz | list = [],
+    ign_prefix: str | Clazz | None = None,
+    ign_suffix: str | Clazz | None = None,
     extra_rules: list[Line] | None = None,
 ) -> Lookup:
     """
@@ -464,9 +463,9 @@ def subst_liga(
 
     generated_ignores = []
     if ign_prefix:
-        generated_ignores.append(ignore(ign_prefix, source_arr[0], source_arr[1:]))
+        generated_ignores.append(ign(ign_prefix, source_arr[0], source_arr[1:]))
     if ign_suffix:
-        generated_ignores.append(ignore(None, source_arr[0], source_arr[1:] + to_list(ign_suffix)))
+        generated_ignores.append(ign(None, source_arr[0], source_arr[1:] + [ign_suffix]))
 
     subst_rules = []
     if not surround:
@@ -492,7 +491,7 @@ def subst_liga(
     )
 
 
-def ignore(
+def ign(
     prefix: str | Clazz | Sequence[str | Clazz] | None,
     glyph: str | Clazz,
     suffix: str | Clazz | Sequence[str | Clazz] | None,

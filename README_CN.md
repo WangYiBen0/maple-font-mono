@@ -522,7 +522,7 @@ fonts.packages = with pkgs; [
 
 ### 浏览器中构建
 
-进入 [特性测试页面](https://font.subf.dev/zh-cn/playground)，点击左下角的 “自定义构建” 按钮
+进入 [特性测试页面](https://font.subf.dev/zh-cn/playground)，点击左下角的“自定义构建”按钮
 
 ### 使用 Github Actions
 
@@ -568,6 +568,8 @@ python build.py
 - 如果 `"nerd_font.mono"` 设置为 `true`，则增加 `--mono`
 
 #### 预设
+
+如果您想要获得固定宽度的 Nerd Font 图标，只需要在 `config.json` 中设置 `"nerd_font.mono": true` 或者在构建脚本中添加 `--nf-mono` 参数即可。
 
 运行 `build.py` 时添加 `--normal` 参数，让字形不那么独特~~奇怪~~，就像 `JetBrains Mono` 一样（除了 `0` 的中间是斜线而不是点）。
 
@@ -622,10 +624,11 @@ OpenType Feature 可以控制字体的内置变体和连字。您可以通过修
 
 ```
 usage: build.py [-h] [-v] [-d] [--debug] [-n] [--feat FEAT] [--apply-fea-file]
-                [--hinted | --no-hinted] [--liga | --no-liga] [--cn-narrow]
-                [--cn-scale-factor CN_SCALE_FACTOR] [--nerd-font | --no-nerd-font]
-                [--cn | --no-cn] [--cn-both] [--ttf-only] [--least-styles]
-                [--font-patcher] [--cache] [--cn-rebuild] [--archive]
+                [--hinted | --no-hinted] [--liga | --no-liga] [--nf-mono]
+                [--cn-narrow] [--cn-scale-factor CN_SCALE_FACTOR] [--nerd-font |
+                --no-nerd-font] [--cn | --no-cn] [--cn-both] [--ttf-only]
+                [--least-styles] [--font-patcher] [--cache] [--cn-rebuild]
+                [--archive]
 
 ✨ Builder and optimizer for Maple Mono
 
@@ -645,9 +648,11 @@ Feature Options:
   --no-hinted           在 NF / CN / NF-CN 中使用 unhinted 字体作为基础字体
   --liga                保留所有连字（默认）
   --no-liga             删除所有连字
+  --nf_mono             固定 Nerd Font 图标的宽度
   --cn-narrow           减小中文/日文字形间距（同时会让系统无法识别为等宽字体）
   --cn-scale-factor CN_SCALE_FACTOR
-                        中文/日文字形的缩放因子（例如 1.1）
+                        中文/日文字形的缩放因子。格式：<因子> 或
+                        <宽度因子>,<高度因子> (例如 1.1 或 1.2,1.1)
 
 Build Options:
   --nerd-font           构建 Nerd-Font 版本（默认）

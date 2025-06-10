@@ -1,5 +1,6 @@
 from source.py.feature import ast
 from source.py.feature.base.clazz import cls_question
+from source.py.feature.calt._infinite_utils import ignore_when_using_infinite
 
 
 def get_lookup():
@@ -10,7 +11,7 @@ def get_lookup():
         ast.subst_liga(
             "::",
             ign_prefix=":",
-            ign_suffix=ast.cls("=", ":"),
+            ign_suffix=":",
         ),
         ast.subst_liga(
             ":::",
@@ -42,34 +43,41 @@ def get_lookup():
             cls_ign_colon,
             cls_ign_markup,
         ),
-        ast.subst_liga(
-            ":=",
-            ign_prefix=ast.cls(cls_ign_colon, cls_question),
-            ign_suffix=ast.cls("=", ":"),
-        ),
-        ast.subst_liga(
-            "=:",
-            ign_prefix=cls_ign_colon,
-            ign_suffix=ast.cls("=", ":"),
-            extra_rules=[
-                ast.ignore(["(", cls_question], "=", ":"),
-            ],
-        ),
-        ast.subst_liga(
-            ":=:",
-            ign_prefix=ast.cls(cls_ign_colon, cls_question),
-            ign_suffix=ast.cls(cls_ign_colon, cls_question),
-            extra_rules=[
-                ast.ignore(["(", cls_question], ":", ["=", ":"]),
-            ],
-        ),
-        ast.subst_liga(
-            "=:=",
-            ign_prefix="=",
-            ign_suffix="=",
-            extra_rules=[
-                ast.ignore(["(", cls_question], "=", [":", "="]),
-            ],
+        ignore_when_using_infinite(
+            ast.subst_liga(
+                ":=",
+                ign_prefix=ast.cls(cls_ign_colon, cls_question),
+                ign_suffix=ast.cls("=", ":"),
+            ),
+            ast.subst_liga(
+                "=:",
+                ign_prefix=cls_ign_colon,
+                ign_suffix=ast.cls("=", ":"),
+                extra_rules=[
+                    ast.ign(["(", cls_question], "=", ":"),
+                ],
+            ),
+            ast.subst_liga(
+                ":=:",
+                ign_prefix=ast.cls(cls_ign_colon, cls_question),
+                ign_suffix=ast.cls(cls_ign_colon, cls_question),
+                extra_rules=[
+                    ast.ign(["(", cls_question], ":", ["=", ":"]),
+                ],
+            ),
+            ast.subst_liga(
+                "=:=",
+                ign_prefix="=",
+                ign_suffix="=",
+                extra_rules=[
+                    ast.ign(["(", cls_question], "=", [":", "="]),
+                ],
+            ),
+            ast.subst_liga(
+                "::=",
+                ign_prefix=":",
+                ign_suffix="=",
+            ),
         ),
         ast.subst_liga(
             "<:",
@@ -95,10 +103,5 @@ def get_lookup():
             ">:>",  # scala / haskell
             ign_prefix=cls_ign_markup,
             ign_suffix=">",
-        ),
-        ast.subst_liga(
-            "::=",
-            ign_prefix=":",
-            ign_suffix="=",
         ),
     ]

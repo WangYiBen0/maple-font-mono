@@ -74,7 +74,7 @@ def fea(output: str, cn: bool) -> None:
     # Update README sections
     md_path = joinPaths(output, "README.md")
     sections = {
-        "<!-- CALT -->": f"```\n{get_all_calt_text()}\n```",
+        "<!-- CALT -->": get_all_calt_text(),
         "<!-- CV -->": get_cv_desc(),
         "<!-- CV-IT -->": get_cv_italic_desc(),
         "<!-- CV-CN -->": get_cv_cn_desc(),
@@ -94,8 +94,10 @@ def fea(output: str, cn: bool) -> None:
 
     script_path = joinPaths("source", "py", "in_browser.py")
     in_browser_script = read_text(script_path)
+    rules = get_freeze_moving_rules()
+    rules.sort()
     rule_arr_text = (
-        "[" + ", ".join([f'"{item}"' for item in get_freeze_moving_rules()]) + "]"
+        "[" + ", ".join([f'"{item}"' for item in rules]) + "]"
     )
     patched = re.sub(
         r"MOVING_RULES = .*",

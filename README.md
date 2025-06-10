@@ -555,6 +555,8 @@ If you have trouble installing the dependencies, just create a new GitHub Codesp
 
 #### Custom Nerd-Font
 
+If you just want to get fixed width icons, setup `"nerd_font.mono": true` in `config.json` or add `--nf-mono` flag to build script args.
+
 For custom `font-patcher` args, `font-forge` (and maybe `python3-fontforge` as well) is required.
 
 Maybe you should also change `"nerd_font.extra_args"` in [config.json](./config.json)
@@ -617,10 +619,11 @@ By enabling `cv99`, all Chinese punctuation marks will be centred. See more deta
 
 ```
 usage: build.py [-h] [-v] [-d] [--debug] [-n] [--feat FEAT] [--apply-fea-file]
-                [--hinted | --no-hinted] [--liga | --no-liga] [--cn-narrow]
-                [--cn-scale-factor CN_SCALE_FACTOR] [--nerd-font | --no-nerd-font]
-                [--cn | --no-cn] [--cn-both] [--ttf-only] [--least-styles]
-                [--font-patcher] [--cache] [--cn-rebuild] [--archive]
+                [--hinted | --no-hinted] [--liga | --no-liga] [--nf-mono]
+                [--cn-narrow] [--cn-scale-factor CN_SCALE_FACTOR] [--nerd-font |
+                --no-nerd-font] [--cn | --no-cn] [--cn-both] [--ttf-only]
+                [--least-styles] [--font-patcher] [--cache] [--cn-rebuild]
+                [--archive]
 
 ✨ Builder and optimizer for Maple Mono
 
@@ -641,10 +644,12 @@ Feature Options:
   --no-hinted           Use unhinted font as base font in NF / CN / NF-CN
   --liga                Preserve all the ligatures (default)
   --no-liga             Remove all the ligatures
+  --nf-mono             Fixed Nerd Font icons' width
   --cn-narrow           Make CN / JP characters narrow (And the font cannot be
                         recogized as monospaced font)
   --cn-scale-factor CN_SCALE_FACTOR
-                        Scale factor for CN / JP glyphs (e.g. 1.1)
+                        Scale factor for CN / JP glyphs. Format: <factor> or
+                        <width_factor>,<height_factor> (e.g. 1.1 or 1.2,1.1)
 
 Build Options:
   --nerd-font           Build Nerd-Font version (default)

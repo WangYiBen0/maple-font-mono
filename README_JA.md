@@ -556,6 +556,8 @@ python build.py
 
 #### カスタム Nerd-Font
 
+固定幅の Nerd Font アイコンを取得したい場合は、`config.json` に `"nerd_font.mono": true` と設定するか、ビルドスクリプトに `--nf-mono` パラメータを追加するだけです。
+
 カスタム `font-patcher` 引数の場合、`font-forge`（おそらく `python3-fontforge` も）が必要です。
 
 おそらく[config.json](./config.json)の `"nerd_font.extra_args"` も変更する必要があります。
@@ -618,10 +620,11 @@ CN バージョンはデフォルトで無効になっています。`python bui
 
 ```
 usage: build.py [-h] [-v] [-d] [--debug] [-n] [--feat FEAT] [--apply-fea-file]
-                [--hinted | --no-hinted] [--liga | --no-liga] [--cn-narrow]
-                [--cn-scale-factor CN_SCALE_FACTOR] [--nerd-font | --no-nerd-font]
-                [--cn | --no-cn] [--cn-both] [--ttf-only] [--least-styles]
-                [--font-patcher] [--cache] [--cn-rebuild] [--archive]
+                [--hinted | --no-hinted] [--liga | --no-liga] [--nf-mono]
+                [--cn-narrow] [--cn-scale-factor CN_SCALE_FACTOR] [--nerd-font |
+                --no-nerd-font] [--cn | --no-cn] [--cn-both] [--ttf-only]
+                [--least-styles] [--font-patcher] [--cache] [--cn-rebuild]
+                [--archive]
 
 ✨ Builder and optimizer for Maple Mono
 
@@ -642,10 +645,12 @@ Feature Options:
   --no-hinted           NF / CN / NF-CNでヒントなしフォントをベースフォントとして使用
   --liga                すべてのリガチャを保持（デフォルト）
   --no-liga             すべてのリガチャを削除
+  --nf-mono             固定された Nerd Font アイコンの幅
   --cn-narrow           中国語/日本語の文字間隔を縮小する（同時にシステムが等幅フォントと
                         して認識できなくなる）
   --cn-scale-factor CN_SCALE_FACTOR
-                        中国語/日本語グリフのスケール係数（例：1.1）
+                        中国語/日本語グリフのスケール係数。形式：<係数> または
+                        <幅の係数>,<高さの係数> (例：1.1 または 1.2,1.1)
 
 Build Options:
   --nerd-font           Nerd-Fontバージョンをビルド（デフォルト）

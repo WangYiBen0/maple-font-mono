@@ -28,15 +28,9 @@ def main():
 
     release_parser = command.add_parser("release", help="Release new version")
     release_parser.add_argument(
-        "tag",
-        type=str,
-        help="The tag to build the release for, e.g. 7.0 or v7.0",
-    )
-    release_parser.add_argument(
-        "beta",
-        nargs="?",
-        type=str,
-        help="Beta tag name, e.g. 3 or beta3",
+        "type",
+        choices=["major", "minor"],
+        help="Bump version type",
     )
     release_parser.add_argument(
         "--dry",
@@ -61,7 +55,7 @@ def main():
     elif args.command == "release":
         from source.py.task.release import release
 
-        release(args.tag, args.beta, args.dry)
+        release(args.type, args.dry)
     elif args.command == "page":
         from source.py.task.page import page
 

@@ -28,70 +28,19 @@ def run_git_command(args: list, cwd=None, check=True):
         sys.exit(1)
 
 
-def has_no_changes(repo_path: str | None = None) -> bool:
-    """Check if the repository has no uncommitted changes"""
-    status = run_git_command(["git", "status", "--porcelain"], cwd=repo_path)
-    return not bool(status)
-
-
-def commit_and_push_submodule(submodule_path: str, commit_message: str) -> bool:
-    """Commit and push changes in the submodule"""
-    abs_submodule_path = os.path.abspath(submodule_path)
-
-    # Check if submodule exists
-    if not os.path.exists(abs_submodule_path):
-        print(
-            f"Error: Submodule {submodule_path} does not exist, please run `git submodule update --init` first"
-        )
-        sys.exit(1)
-
-    # Check for uncommitted changes
-    if has_no_changes(abs_submodule_path):
-        print("Landing page data has no changes, skipping")
-        return False
-
-    # Switch to main branch
-    run_git_command(["git", "checkout", "main"], cwd=abs_submodule_path)
-
-    # Add all changes
-    run_git_command(["git", "add", "."], cwd=abs_submodule_path)
-
-    # Commit changes
-    run_git_command(
-        ["git", "commit", "-m", "[skip-ci]" + commit_message], cwd=abs_submodule_path
-    )
-
-    # Push to remote
-    run_git_command(["git", "push", "origin", "main"], cwd=abs_submodule_path)
-
-    print(f"Submodule {submodule_path} changes committed and pushed to main")
-    return True
-
-
-def update_main_repo(submodule_path: str, main_commit_message: str) -> None:
-    """Update the main repository's submodule reference"""
-
-    # Update submodule to the latest commit
-    run_git_command(["git", "submodule", "update", "--remote"])
-
-    # Add submodule changes to the main repository
-    run_git_command(["git", "add", submodule_path])
-
-    # Check if main repo has changes to commit
-    if has_no_changes():
-        print("Main repository has no submodule reference changes, skipping commit")
-        return
-
-    # Commit main repo changes
-    run_git_command(["git", "commit", "-m", main_commit_message])
-
-    # Push main repo
-    run_git_command(["git", "push", "origin", "main"])
-
-    print("Main repository submodule reference updated and pushed")
-
-
 def page(submodule_path: str, var_dir: str, commit: bool = False) -> None:
+    # Switch to main branch
+    abs_submodule_path = os.path.abspath(submodule_path)
+    if commit:
+        if not os.path.exists(abs_submodule_path):
+            print(
+                f"Error: Submodule {submodule_path} does not exist, please run `git submodule update --init` first"
+            )
+            sys.exit(1)
+        run_git_command(["git", "submodule", "update", "--remote"])
+        run_git_command(["git", "checkout", "main"], cwd=abs_submodule_path)
+        run_git_command(["git", "pull"], cwd=abs_submodule_path)
+
     # Update landing page data
     feature_data_base = joinPaths(submodule_path, "data", "features")
     os.makedirs(feature_data_base, exist_ok=True)
@@ -127,11 +76,16 @@ def page(submodule_path: str, var_dir: str, commit: bool = False) -> None:
 
     # Commit changes if specified
     if commit:
-        commit_message = "Update landing page data"
+        # Add all changes
+        run_git_command(["git", "add", "."], cwd=abs_submodule_path)
 
-        # Commit and push submodule changes
-        modified = commit_and_push_submodule(submodule_path, commit_message)
+        # Commit changes
+        run_git_command(
+            ["git", "commit", "-m", "Update landing page data"], cwd=abs_submodule_path
+        )
 
-        # Update main repo if submodule was modified
-        if not modified:
-            print("No changes to update in main repository")
+        # Push to remote
+        run_git_command(["git", "push", "origin", "main"], cwd=abs_submodule_path)
+
+        # Reset to HEAD
+        run_git_command(["git", "submodule", "update", "--remote"])

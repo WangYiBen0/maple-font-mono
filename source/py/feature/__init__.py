@@ -1,4 +1,5 @@
 from copy import deepcopy
+from html import escape
 import json
 from source.py.feature import ast
 from source.py.feature.base import get_base_feature_cn_only, get_base_features
@@ -128,16 +129,34 @@ def generate_fea_string_cn_only():
 
 
 def get_all_calt_text():
-    result = []
+    result: list[str] = []
 
     for item in ast.recursive_iterate(get_calt_lookup(cls_var, cls_hex_letter, True)):
         if isinstance(item, ast.Lookup) and item.desc:
             if item.name == "escape":
                 result.append(item.desc.replace("\\ ", "\\\\ "))
-            else:
+            elif item.name.startswith('infinite'):
+                result.extend(item.desc.split(' '))
+            elif not item.name.endswith("__ALT__"):
                 result.append(item.desc)
 
-    return "\n".join(result)
+    # Split into three columns
+    third = (len(result) + 2) // 3  # Round up for numbers not divisible by 3
+
+    # Create HTML table with three equal columns
+    html_rows = ["<table>"]
+
+    def wrap(str):
+        return f"<td><code>{escape(str)}</code></td>" if str else "<td></td>"
+
+    for i in range(third):
+        col1 = wrap(result[i])
+        col2 = wrap(result[i + third] if i + third < len(result) else "")
+        col3 = wrap(result[i + 2 * third] if i + 2 * third < len(result) else "")
+        html_rows.append(f"<tr>{col1}{col2}{col3}</tr>")
+
+    html_rows.append("</table>")
+    return "\n".join(html_rows)
 
 
 zero_desc = "Dot style `0`"

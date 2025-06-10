@@ -2,29 +2,30 @@ from source.py.feature import ast
 
 
 def get_lookup():
+    left_start = ast.gly_seq("{", "sta")
+    left_end = ast.gly_seq("{", "end")
+    right_start = ast.gly_seq("}", "sta")
+    right_end = ast.gly_seq("}", "end")
     return [
         ast.Lookup(
             ast.gly("{{"),
             "{{",
             [
-                ast.ignore("{", "{", "{"),
-                ast.ignore(None, "{", ["{", ast.cls("{", "!", "-")]),
-                ast.subst(None, "{", "{", ast.gly_var("{", "start")),
-                ast.subst(
-                    ast.gly_var("{", "start"), "{", None, ast.gly_var("{", "end")
-                ),
+                ast.ign("{", "{", "{"),
+                ast.ign(None, "{", ["{", ast.cls("{", "!")]),
+                ast.ign(None, "{", ["{", "-", "-"]),
+                ast.subst(None, "{", "{", left_start),
+                ast.subst(left_start, "{", None, left_end),
             ],
         ),
         ast.Lookup(
             ast.gly("}}"),
             "}}",
             [
-                ast.ignore(ast.cls("!", "}", "-"), "}", "}"),
-                ast.ignore(None, "}", ["}", "}"]),
-                ast.subst(None, "}", "}", ast.gly_var("}", "start")),
-                ast.subst(
-                    ast.gly_var("}", "start"), "}", None, ast.gly_var("}", "end")
-                ),
+                ast.ign(ast.cls("!", "}", "-"), "}", "}"),
+                ast.ign(None, "}", ["}", "}"]),
+                ast.subst(None, "}", "}", right_start),
+                ast.subst(right_start, "}", None, right_end),
             ],
         ),
         ast.subst_liga(
