@@ -75,21 +75,21 @@ OpenType Features are not supported, you need to custom build to freeze features
 <tr><td><code>|]</code></td><td><code>&lt;=&gt;</code></td><td><code>[WARNING]</code></td></tr>
 <tr><td><code>!!</code></td><td><code>&lt;==&gt;</code></td><td><code>todo))</code></td></tr>
 <tr><td><code>||</code></td><td><code>&lt;==</code></td><td><code>fixme))</code></td></tr>
-<tr><td><code>??</code></td><td><code>==&gt;</code></td><td><code>Cl</code></td></tr>
-<tr><td><code>???</code></td><td><code>=&gt;</code></td><td><code>al</code></td></tr>
-<tr><td><code>&amp;&amp;</code></td><td><code>&lt;=|</code></td><td><code>cl</code></td></tr>
-<tr><td><code>&amp;&amp;&amp;</code></td><td><code>|=&gt;</code></td><td><code>el</code></td></tr>
-<tr><td><code>//</code></td><td><code>=&lt;=</code></td><td><code>il</code></td></tr>
-<tr><td><code>///</code></td><td><code>=&gt;=</code></td><td><code>tl</code></td></tr>
-<tr><td><code>/*</code></td><td><code>=======</code></td><td><code>ul</code></td></tr>
-<tr><td><code>/**</code></td><td><code>&gt;=&lt;</code></td><td><code>xl</code></td></tr>
-<tr><td><code>*/</code></td><td><code>:=</code></td><td><code>ff</code></td></tr>
-<tr><td><code>++</code></td><td><code>=:</code></td><td><code>tt</code></td></tr>
-<tr><td><code>+++</code></td><td><code>:=:</code></td><td><code>all</code></td></tr>
-<tr><td><code>;;</code></td><td><code>=:=</code></td><td><code>ell</code></td></tr>
-<tr><td><code>;;;</code></td><td><code>\\ \&#x27; \.</code></td><td><code>ill</code></td></tr>
-<tr><td><code>..</code></td><td><code>--</code></td><td><code>ull</code></td></tr>
-<tr><td><code>...</code></td><td><code>---</code></td><td><code>ll</code></td></tr>
+<tr><td><code>??</code></td><td><code>==&gt;</code></td><td><code><em>Cl</em></code></td></tr>
+<tr><td><code>???</code></td><td><code>=&gt;</code></td><td><code><em>al</em></code></td></tr>
+<tr><td><code>&amp;&amp;</code></td><td><code>&lt;=|</code></td><td><code><em>cl</em></code></td></tr>
+<tr><td><code>&amp;&amp;&amp;</code></td><td><code>|=&gt;</code></td><td><code><em>el</em></code></td></tr>
+<tr><td><code>//</code></td><td><code>=&lt;=</code></td><td><code><em>il</em></code></td></tr>
+<tr><td><code>///</code></td><td><code>=&gt;=</code></td><td><code><em>tl</em></code></td></tr>
+<tr><td><code>/*</code></td><td><code>=======</code></td><td><code><em>ul</em></code></td></tr>
+<tr><td><code>/**</code></td><td><code>&gt;=&lt;</code></td><td><code><em>xl</em></code></td></tr>
+<tr><td><code>*/</code></td><td><code>:=</code></td><td><code><em>ff</em></code></td></tr>
+<tr><td><code>++</code></td><td><code>=:</code></td><td><code><em>tt</em></code></td></tr>
+<tr><td><code>+++</code></td><td><code>:=:</code></td><td><code><em>all</em></code></td></tr>
+<tr><td><code>;;</code></td><td><code>=:=</code></td><td><code><em>ell</em></code></td></tr>
+<tr><td><code>;;;</code></td><td><code>\\ \&#x27; \.</code></td><td><code><em>ill</em></code></td></tr>
+<tr><td><code>..</code></td><td><code>--</code></td><td><code><em>ull</em></code></td></tr>
+<tr><td><code>...</code></td><td><code>---</code></td><td><code><em>ll</em></code></td></tr>
 <tr><td><code>.?</code></td><td><code>&lt;!--</code></td><td></td></tr>
 </table>
 <!-- CALT -->
@@ -122,17 +122,17 @@ OpenType Features are not supported, you need to custom build to freeze features
 #### Italic Only
 
 <!-- CV-IT -->
-- [v7.0] cv31: Alternative italic `a` with top arm
-- [v7.0] cv32: Alternative Italic `f` without bottom tail
-- [v7.0] cv33: Alternative Italic `i` and `j` with left bottom bar and horizen top bar
-- [v7.0] cv34: Alternative Italic `k` without center circle
-- [v7.0] cv35: Alternative Italic `l` without center tail
-- [v7.0] cv36: Alternative Italic `x` without top and bottom tails
-- [v7.0] cv37: Alternative Italic `y` with straight intersection
-- [v7.1] cv38: Alternative italic `g` in double story style
-- [v7.1] cv39: Alternative Italic `i` without bottom bar
-- [v7.1] cv40: Alternative italic `J` without top bar
-- [v7.1] cv41: Alternative italic `r` with bottom bar
+- [v7.0] cv31: Alternative italic _`a`_ with top arm
+- [v7.0] cv32: Alternative Italic _`f`_ without bottom tail
+- [v7.0] cv33: Alternative Italic _`i`_ and _`j`_ with left bottom bar and horizen top bar
+- [v7.0] cv34: Alternative Italic _`k`_ without center circle
+- [v7.0] cv35: Alternative Italic _`l`_ without center tail
+- [v7.0] cv36: Alternative Italic _`x`_ without top and bottom tails
+- [v7.0] cv37: Alternative Italic _`y`_ with straight intersection
+- [v7.1] cv38: Alternative italic _`g`_ in double story style
+- [v7.1] cv39: Alternative Italic _`i`_ without bottom bar
+- [v7.1] cv40: Alternative italic _`J`_ without top bar
+- [v7.1] cv41: Alternative italic _`r`_ with bottom bar
 <!-- CV-IT -->
 
 #### CN Only
@@ -152,7 +152,7 @@ OpenType Features are not supported, you need to custom build to freeze features
 - [v7.0] ss03: Allow to use any case in all tags
 - [v7.0] ss04: Broken multiple underscores ligatures (`__`, `#__`)
 - [v7.0] ss05: Revert thin backslash in escape symbols (`\\`, `\"`, `\.` ...)
-- [v7.0] ss06: Break connected strokes between italic letters (`al`, `il`, `ull` ...)
+- [v7.0] ss06: Break connected strokes between italic letters (_`al`_, _`il`_, _`ull`_ ...)
 - [v7.0] ss07: Relax the conditions for multiple greaters ligatures (`>>` or `>>>`)
 - [v7.0] ss08: Double headed arrows and reverse arrows ligatures (`>>=`, `-<<`, `->>`, `>>-` ...)
 - [v7.1] ss09: Asciitilde equal as not equal to ligature (`~=`)

@@ -1,10 +1,12 @@
 from copy import deepcopy
 from html import escape
 import json
+import re
 from source.py.feature import ast
 from source.py.feature.base import get_base_feature_cn_only, get_base_features
 from source.py.feature.base.lang import get_lang_list
 from source.py.feature.calt import get_calt, get_calt_lookup
+from source.py.feature.calt._infinite_utils import infinite_helper
 from source.py.feature.cv import cv96, cv97, cv98, cv99
 from source.py.feature.regular import (
     cls_var,
@@ -48,6 +50,8 @@ def generate_fea_string(
     is_cn: bool,
     is_normal: bool = False,
     is_calt: bool = True,
+    enable_infinite: bool = True,
+    enable_tag: bool = True,
     variable_enabled_feature_list: list[str] | None = None,
 ):
     """
@@ -63,10 +67,12 @@ def generate_fea_string(
         is_calt (bool): Whether to enable calt
         variable_enabled_feature_list (list[str]): List of features that
             be enabled in variable format
+        infinite (bool): Whether to add infinite arrow ligatures
     """
     print(
-        f"Generating feature string with italic={is_italic}, cn={is_cn}, normal={is_normal}, calt={is_calt}, variable={bool(variable_enabled_feature_list)}"
+        f"Generating feature string with italic={is_italic}, cn={is_cn}, normal={is_normal}, calt={is_calt}, variable={bool(variable_enabled_feature_list)}, infinite={enable_infinite}, tag={enable_tag}"
     )
+    infinite_helper.set(enable_infinite)
 
     class_list = class_list_italic if is_italic else class_list_regular
     cv_list = cv_list_italic if is_italic else cv_list_regular
@@ -76,7 +82,7 @@ def generate_fea_string(
         raise TypeError("Invalid class_list, must ends with [@Var, @HexLetter]")
 
     calt_feat = get_calt(
-        class_list[-2], class_list[-1], is_italic=is_italic, is_normal=is_normal
+        class_list[-2], class_list[-1], is_italic=is_italic, is_normal=is_normal, enable_tag=enable_tag
     )
 
     # clear calt for no ligature
@@ -108,6 +114,7 @@ def generate_fea_string(
     # remove calt if empty, to prevent fonttools warning
     if not calt_feat.content:
         calt_feat = None
+
 
     return ast.create(
         [
@@ -146,8 +153,14 @@ def get_all_calt_text():
     # Create HTML table with three equal columns
     html_rows = ["<table>"]
 
-    def wrap(str):
-        return f"<td><code>{escape(str)}</code></td>" if str else "<td></td>"
+    def wrap(desc: str):
+        if not desc:
+            return "<td></td>"
+        _desc = escape(desc)
+        italic_prefix = "italic "
+        if _desc.startswith(italic_prefix):
+            _desc = f"<em>{_desc.replace(italic_prefix, '')}</em>"
+        return f"<td><code>{_desc}</code></td>"
 
     for i in range(third):
         col1 = wrap(result[i])
@@ -183,9 +196,15 @@ def get_cv_version_info() -> dict[str, dict[str, str]]:
     return get_version_info(cv_list_regular)
 
 
+italic_code_pattern = re.compile(r"`([^`]+)`")
+
 def get_cv_italic_desc():
     return "\n".join(
-        [cv.desc_item() for cv in cv_list_italic if cv.id > 30 and cv.id < 61]
+        [
+            italic_code_pattern.sub(r"_`\1`_", cv.desc_item())
+            for cv in cv_list_italic
+            if cv.id > 30 and cv.id < 61
+        ]
     )
 
 
@@ -209,6 +228,8 @@ def get_ss_desc():
 
             if ss.id == 5:
                 desc = desc.replace("`\\\\`", "`\\\\\\\\`")
+            elif ss.id == 6:
+                desc = italic_code_pattern.sub(r"_`\1`_", desc)
 
             result[ss.id] = desc
 

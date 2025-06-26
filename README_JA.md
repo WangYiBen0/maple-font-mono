@@ -596,6 +596,10 @@ OpenType Feature は、フォントに組み込まれたバリエーションや
 
 OpenType Feature ファイルを直接編集して実現したい場合、`build.py`  を実行する際に `--apply-fea-file` 引数を追加すると、[`source/features/{regular,italic}.fea`](./source/features) の特性ファイルが読み込まれ、適用されます。
 
+#### 無限矢印リガチャ
+
+Fira Codeに着想を得て、このフォントはv7.3からデフォルトで無限の矢印リガチャを有効にします。何らかの理由で、hintedフォントを使用するとリガチャがずれてしまうため、v7.4のhintedバージョンではデフォルトでそれを削除しました。`config.json` に `"keep_infinite_arrow": true` を設定するか、CLI フラグに `--keep-infinite-arrow` を追加してください。詳細は [#508](https://github.com/subframe7536/maple-font/issues/508) を参照してください
+
 ### 中国語バージョン
 
 CN バージョンはデフォルトで無効になっています。`python build.py` を `--cn` フラグで実行すると、CN ベースフォント（約 130 MB）が GitHub からダウンロードされます。
@@ -620,11 +624,11 @@ CN バージョンはデフォルトで無効になっています。`python bui
 
 ```
 usage: build.py [-h] [-v] [-d] [--debug] [-n] [--feat FEAT] [--apply-fea-file]
-                [--hinted | --no-hinted] [--liga | --no-liga] [--nf-mono]
-                [--cn-narrow] [--cn-scale-factor CN_SCALE_FACTOR] [--nerd-font |
-                --no-nerd-font] [--cn | --no-cn] [--cn-both] [--ttf-only]
-                [--least-styles] [--font-patcher] [--cache] [--cn-rebuild]
-                [--archive]
+                [--hinted | --no-hinted] [--liga | --no-liga] [--keep-infinite-arrow]
+                [--remove-tag-liga] [--nf-mono] [--cn-narrow]
+                [--cn-scale-factor CN_SCALE_FACTOR] [--nerd-font | --no-nerd-font]
+                [--cn | --no-cn] [--cn-both] [--ttf-only] [--least-styles]
+                [--font-patcher] [--cache] [--cn-rebuild] [--archive]
 
 ✨ Builder and optimizer for Maple Mono
 
@@ -645,7 +649,10 @@ Feature Options:
   --no-hinted           NF / CN / NF-CNでヒントなしフォントをベースフォントとして使用
   --liga                すべてのリガチャを保持（デフォルト）
   --no-liga             すべてのリガチャを削除
-  --nf-mono             固定された Nerd Font アイコンの幅
+  --keep-infinite-arrow
+                        ヒンテッドフォントで無限矢印リガチャを保持します（デフォルトで削除）
+  --remove-tag-liga     純テキストタグのリガチャ、例えば `[TODO]` を削除する。
+  --nf-mono             固定幅の Nerd Font アイコンを使用します
   --cn-narrow           中国語/日本語の文字間隔を縮小する（同時にシステムが等幅フォントと
                         して認識できなくなる）
   --cn-scale-factor CN_SCALE_FACTOR
