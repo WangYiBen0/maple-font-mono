@@ -39,6 +39,7 @@ def main():
     )
 
     page_parser = command.add_parser("page", help="Update landing page data")
+    page_parser.add_argument("--woff2", action="store_true", help="Generate new woff2 fonts")
     page_parser.add_argument("--commit", action="store_true", help="Commit changes")
 
     args = parser.parse_args()
@@ -59,7 +60,7 @@ def main():
     elif args.command == "page":
         from source.py.task.page import page
 
-        page("./maple-font-page", "./fonts/Variable", args.commit)
+        page("./maple-font-page", "./fonts/Variable", args.woff2, args.commit)
     else:
         print("Test only")
         from source.py.in_browser import main

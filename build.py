@@ -16,6 +16,7 @@ from fontTools.feaLib.builder import addOpenTypeFeatures, addOpenTypeFeaturesFro
 from ttfautohint import StemWidthMode, ttfautohint
 from source.py.utils import (
     add_ital_axis_to_stat,
+    adjust_line_height,
     check_font_patcher,
     check_directory_hash,
     get_directory_hash,
@@ -39,30 +40,34 @@ from source.py.feature import (
 )
 
 
-FONT_VERSION = "v7.4-dev"
+FONT_VERSION = "v7.4"
 # =========================================================================================
 
 
 def check_ftcli():
-    package_name = "foundrytools_cli"
-    package_spec = importlib.util.find_spec(package_name)
+    package_name_v1 = "foundryToolsCLI"
+    package_spec_v1 = importlib.util.find_spec(package_name_v1)
+    package_name_v2 = "foundrytools_cli"
+    package_spec_v2 = importlib.util.find_spec(package_name_v2)
 
-    if not package_spec:
+    if not package_spec_v1 and not package_spec_v2:
         print(
-            f"❗ {package_name} is not found. Please run `pip install foundrytools-cli`"
+            "❗ foundrytools-cli is not found. Please run `pip install foundrytools-cli`"
         )
         exit(1)
 
     try:
-        package = importlib.import_module(package_name)
-        version = getattr(package, '__version__', None)
-        if version and version < '2':
+        installed_package = importlib.import_module(
+            package_name_v2 if package_spec_v2 else package_name_v1
+        )
+        version = getattr(installed_package, "__version__", None)
+        if version and version < "2":
             print(
-                f"❗ {package_name} version {version} is too old. Please run `pip install --upgrade foundrytools-cli`"
+                f"❗ foundrytools-cli version {version} is too old. Please run `pip install --upgrade foundrytools-cli`"
             )
             exit(1)
     except Exception as e:
-        print(f"❗ Error checking {package_name} version: {e}")
+        print(f"❗ Error checking foundrytools-cli version: {e}")
         exit(1)
 
 
@@ -173,6 +178,11 @@ def parse_args(args: list[str] | None = None):
         default=None,
         action="store_true",
         help="Remove plain text tag ligatures like `[TODO]`",
+    )
+    feature_group.add_argument(
+        "--line-height",
+        type=float,
+        help="Scale factor for line height (e.g. 1.1)",
     )
     feature_group.add_argument(
         "--nf-mono",
@@ -360,6 +370,7 @@ class FontConfig:
         self.glyph_width_cn_narrow = 1000
         self.use_normal_preset = False
         self.ttfautohint_param = {}
+        self.line_height_factor = 1.0
 
         self.__load_config()
         self.__load_args(args)
@@ -385,11 +396,12 @@ class FontConfig:
                 data = json.load(f)
                 for prop in [
                     "family_name",
+                    "pool_size",
                     "use_hinted",
                     "enable_liga",
                     "ttfautohint_param",
                     "keep_infinite_arrow",
-                    "pool_size",
+                    "line_height",
                     "github_mirror",
                     "feature_freeze",
                     "nerd_font",
@@ -448,6 +460,9 @@ class FontConfig:
 
         if args.remove_tag_liga:
             self.remove_tag_liga = True
+
+        if args.line_height is not None:
+            self.line_height_factor = args.line_height
 
         if args.nf_mono:
             self.nerd_font["mono"] = args.nf_mono
@@ -992,7 +1007,6 @@ def build_mono(f: str, font_config: FontConfig, build_option: BuildOption):
         run(f"ftcli ttf dehint {source_path}")
         run(f"ftcli fix transformed-components {source_path}")
 
-
     font = TTFont(source_path)
 
     style_compact = f.split("-")[-1].split(".")[0]
@@ -1042,6 +1056,8 @@ def build_mono(f: str, font_config: FontConfig, build_option: BuildOption):
         freeze_config=font_config.feature_freeze,
     )
 
+    adjust_line_height(font, font_config.line_height_factor)
+
     verify_glyph_width(
         font=font,
         expect_widths=font_config.get_valid_glyph_width_list(),
@@ -1066,9 +1082,7 @@ def build_mono(f: str, font_config: FontConfig, build_option: BuildOption):
         build_option.output_otf, path.basename(target_path).replace(".ttf", ".otf")
     )
     print(f"Convert {postscript_name}.ttf to OTF")
-    run(
-        f"ftcli converter ttf2otf {target_path} -out {build_option.output_otf}"
-    )
+    run(f"ftcli converter ttf2otf {target_path} -out {build_option.output_otf}")
     if not font_config.debug:
         print(f"Optimize {postscript_name}.otf")
         run(f"ftcli font correct-contours {_otf_path}")
@@ -1229,6 +1243,9 @@ def build_nf(
         preferred_family_name=f"{font_config.family_name} NF",
         preferred_style_name=style_in_17,
     )
+
+    adjust_line_height(nf_font, font_config.line_height_factor)
+
     verify_glyph_width(
         font=nf_font,
         expect_widths=font_config.get_valid_glyph_width_list(),
@@ -1357,11 +1374,14 @@ def build_cn(f: str, font_config: FontConfig, build_option: BuildOption):
         }
         cn_font["meta"] = meta
 
+    adjust_line_height(cn_font, font_config.line_height_factor)
+
     verify_glyph_width(
         font=cn_font,
         expect_widths=font_config.get_valid_glyph_width_list(True),
         file_name=postscript_name,
     )
+
     target_path = joinPaths(
         build_option.output_cn,
         f"{postscript_name}.ttf",

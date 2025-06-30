@@ -624,10 +624,11 @@ By enabling `cv99`, all Chinese punctuation marks will be centred. See more deta
 ```
 usage: build.py [-h] [-v] [-d] [--debug] [-n] [--feat FEAT] [--apply-fea-file]
                 [--hinted | --no-hinted] [--liga | --no-liga] [--keep-infinite-arrow]
-                [--remove-tag-liga] [--nf-mono] [--cn-narrow]
-                [--cn-scale-factor CN_SCALE_FACTOR] [--nerd-font | --no-nerd-font]
-                [--cn | --no-cn] [--cn-both] [--ttf-only] [--least-styles]
-                [--font-patcher] [--cache] [--cn-rebuild] [--archive]
+                [--remove-tag-liga] [--line-height LINE_HEIGHT] [--nf-mono]
+                [--cn-narrow] [--cn-scale-factor CN_SCALE_FACTOR] [--nerd-font |
+                --no-nerd-font] [--cn | --no-cn] [--cn-both] [--ttf-only]
+                [--least-styles] [--font-patcher] [--cache] [--cn-rebuild]
+                [--archive]
 
 ✨ Builder and optimizer for Maple Mono
 
@@ -652,6 +653,8 @@ Feature Options:
                         Keep infinite arrow ligatures in hinted font (Removed by
                         default)
   --remove-tag-liga     Remove plain text tag ligatures like `[TODO]`
+  --line-height LINE_HEIGHT
+                        Scale factor for line height (e.g. 1.1)
   --nf-mono             Fixed Nerd Font icons' width
   --cn-narrow           Make CN / JP characters narrow (And the font cannot be
                         recogized as monospaced font)

@@ -625,10 +625,11 @@ CN バージョンはデフォルトで無効になっています。`python bui
 ```
 usage: build.py [-h] [-v] [-d] [--debug] [-n] [--feat FEAT] [--apply-fea-file]
                 [--hinted | --no-hinted] [--liga | --no-liga] [--keep-infinite-arrow]
-                [--remove-tag-liga] [--nf-mono] [--cn-narrow]
-                [--cn-scale-factor CN_SCALE_FACTOR] [--nerd-font | --no-nerd-font]
-                [--cn | --no-cn] [--cn-both] [--ttf-only] [--least-styles]
-                [--font-patcher] [--cache] [--cn-rebuild] [--archive]
+                [--remove-tag-liga] [--line-height LINE_HEIGHT] [--nf-mono]
+                [--cn-narrow] [--cn-scale-factor CN_SCALE_FACTOR] [--nerd-font |
+                --no-nerd-font] [--cn | --no-cn] [--cn-both] [--ttf-only]
+                [--least-styles] [--font-patcher] [--cache] [--cn-rebuild]
+                [--archive]
 
 ✨ Builder and optimizer for Maple Mono
 
@@ -652,6 +653,8 @@ Feature Options:
   --keep-infinite-arrow
                         ヒンテッドフォントで無限矢印リガチャを保持します（デフォルトで削除）
   --remove-tag-liga     純テキストタグのリガチャ、例えば `[TODO]` を削除する。
+  --line-height LINE_HEIGHT
+                        行の高さのスケールファクター（例：1.1）
   --nf-mono             固定幅の Nerd Font アイコンを使用します
   --cn-narrow           中国語/日本語の文字間隔を縮小する（同時にシステムが等幅フォントと
                         して認識できなくなる）

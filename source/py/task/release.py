@@ -22,22 +22,27 @@ weight_map = {
 
 
 def format_fontsource_name(filename: str):
-    match = re.match(r"MapleMono-(.*)\.(.*)$", filename)
+    match = re.match(r"MapleMono-(.*)\.(.*)$", filename.replace(".ttf", ""))
 
     if not match:
         return None
 
     style = match.group(1)
-
-    weight = weight_map[style.removesuffix("Italic") if style != "Italic" else "Italic"]
-    suf = "italic" if "italic" in filename.lower() else "normal"
+    # Remove 'Italic' only if it is a suffix
+    if style.endswith("Italic") and style != "Italic":
+        base_style = style[:-6]  # Remove 'Italic' (6 chars)
+    else:
+        base_style = style
+    # Fallback to 'Regular' if not found
+    weight = weight_map.get(base_style, weight_map.get("Regular", "400"))
+    suf = "italic" if "italic" in style.lower() else "normal"
 
     new_filename = f"maple-mono-latin-{weight}-{suf}.{match.group(2)}"
     return new_filename
 
 
 def format_woff2_name(filename: str):
-    return filename.replace(".woff2", "-VF.woff2")
+    return filename.replace(".ttf.woff2", "-VF.woff2")
 
 
 def rename_woff_files(dir: str, fn: Callable[[str], str | None]):

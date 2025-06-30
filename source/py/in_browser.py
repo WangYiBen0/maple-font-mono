@@ -86,12 +86,10 @@ def main(zip_path: str, target_path: str, config: dict):
     ):
         for file_info in zip_in.infolist():
             file_name = file_info.filename
-            if file_name.lower().endswith(".ttf") or file_name.lower().endswith(".otf"):
+            if file_name.lower().endswith((".ttf", ".otf")):
                 print(f"Patch: {file_name}")
                 with zip_in.open(file_info) as ttf_file:
-                    ttf_buffer = ttf_file.read()
-                    ttf_io = io.BytesIO(ttf_buffer)
-                    font = TTFont(ttf_io)
+                    font = TTFont(ttf_file)
 
                     suffix = get_freeze_config_str(config)
                     freeze_feature(font, MOVING_RULES, config)
@@ -99,7 +97,8 @@ def main(zip_path: str, target_path: str, config: dict):
 
                     output_io = io.BytesIO()
                     font.save(output_io)
-                    zip_out.writestr(file_info, output_io.getvalue())
+                    output_io.seek(0)
+                    zip_out.writestr(file_info, output_io.read())
                     font.close()
             else:
                 print(f'Skip:  {file_name}')

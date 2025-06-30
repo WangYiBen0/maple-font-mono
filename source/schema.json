@@ -67,6 +67,11 @@
       "description": "Remove plain text tag ligatures like `[TODO]`",
       "default": false
     },
+    "line_height": {
+      "type": "number",
+      "description": "Scale factor for line height. (e.g. 1.1)",
+      "default": 1.0
+    },
     "ttfautohint_param": {
       "type": "object",
       "description": "Parameters for ttfautohint, see details in https://freetype.org/ttfautohint/doc/ttfautohint.html#options",

@@ -28,7 +28,7 @@ def run_git_command(args: list, cwd=None, check=True):
         sys.exit(1)
 
 
-def page(submodule_path: str, var_dir: str, commit: bool = False) -> None:
+def page(submodule_path: str, var_dir: str, woff2: bool = False, commit: bool = False) -> None:
     # Switch to main branch
     abs_submodule_path = os.path.abspath(submodule_path)
     if commit:
@@ -37,11 +37,15 @@ def page(submodule_path: str, var_dir: str, commit: bool = False) -> None:
                 f"Error: Submodule {submodule_path} does not exist, please run `git submodule update --init` first"
             )
             sys.exit(1)
+        print("Sync remote")
         run_git_command(["git", "submodule", "update", "--remote"])
+        print("Checkout main")
         run_git_command(["git", "checkout", "main"], cwd=abs_submodule_path)
+        print("Pull commits")
         run_git_command(["git", "pull"], cwd=abs_submodule_path)
 
     # Update landing page data
+    print("Update features")
     feature_data_base = joinPaths(submodule_path, "data", "features")
     os.makedirs(feature_data_base, exist_ok=True)
     write_json(joinPaths(feature_data_base, "cv.json"), get_cv_version_info())
@@ -55,24 +59,32 @@ def page(submodule_path: str, var_dir: str, commit: bool = False) -> None:
         get_total_feat_ts(),
     )
 
+    print("Update config")
     data = read_json("config.json")
     del data["$schema"]
     write_json(joinPaths(feature_data_base, "config.json"), data)
 
+    print("Update script")
     data = read_text(joinPaths("source", "py", "in_browser.py"))
-    write_text(joinPaths(submodule_path, "data", "script.py"), minify(data))
+    write_text(
+        joinPaths(submodule_path, "data", "script.py"),
+        "# Source: https://github.com/subframe7536/maple-font/blob/variable/source/py/in_browser.py\n"
+        + minify(data),
+    )
 
-    font_dir = joinPaths(submodule_path, "public", "fonts")
-    os.system("python build.py --ttf-only --no-nerd-font --least-styles")
-    os.system(f"ftcli converter ft2wf -f woff2 {var_dir}")
-    shutil.rmtree(font_dir, ignore_errors=True)
-    os.makedirs(font_dir, exist_ok=True)
-    for filename in os.listdir(var_dir):
-        if filename.endswith(".woff2"):
-            os.rename(
-                joinPaths(var_dir, filename),
-                joinPaths(font_dir, filename.replace(".woff2", "-VF.woff2")),
-            )
+    if woff2 or commit:
+        print("Update woff2")
+        font_dir = joinPaths(submodule_path, "public", "fonts")
+        os.system("python build.py --ttf-only --no-nerd-font --least-styles")
+        os.system(f"ftcli converter ft2wf -f woff2 {var_dir}")
+        shutil.rmtree(font_dir, ignore_errors=True)
+        os.makedirs(font_dir, exist_ok=True)
+        for filename in os.listdir(var_dir):
+            if filename.endswith(".woff2"):
+                os.rename(
+                    joinPaths(var_dir, filename),
+                    joinPaths(font_dir, filename.replace(".ttf.woff2", "-VF.woff2")),
+                )
 
     # Commit changes if specified
     if commit:
@@ -80,12 +92,15 @@ def page(submodule_path: str, var_dir: str, commit: bool = False) -> None:
         run_git_command(["git", "add", "."], cwd=abs_submodule_path)
 
         # Commit changes
+        print("Commit update")
         run_git_command(
             ["git", "commit", "-m", "Update landing page data"], cwd=abs_submodule_path
         )
 
         # Push to remote
+        print("Push to remote")
         run_git_command(["git", "push", "origin", "main"], cwd=abs_submodule_path)
 
         # Reset to HEAD
+        print("Update")
         run_git_command(["git", "submodule", "update", "--remote"])
