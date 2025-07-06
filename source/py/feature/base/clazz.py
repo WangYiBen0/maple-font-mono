@@ -319,14 +319,13 @@ cls_uppercase = ast.Clazz(
 )
 
 
-def get_base_class_list():
-    return [
-        cls_zero,
-        cls_one,
-        cls_digit,
-        cls_comma,
-        cls_question,
-        cls_uppercase,
-        cls_normal_separator,
-        cls_space,
-    ]
+base_class_list = [
+    cls_zero,
+    cls_one,
+    cls_digit,
+    cls_comma,
+    cls_question,
+    cls_uppercase,
+    cls_normal_separator,
+    cls_space,
+]

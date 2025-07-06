@@ -17,6 +17,6 @@ def cv65_subst():
 
 
 cv65_name = "Alternative `&` in handwriting style"
-cv65_feat_regular = cv65_feat_italic = ast.CharacterVariant(
+cv65_feat = ast.CharacterVariant(
     id=65, desc=cv65_name, content=cv65_subst(), version="7.3", example="&"
 )

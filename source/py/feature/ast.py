@@ -1,5 +1,6 @@
 from collections.abc import Sequence
 import re
+from typing import Literal
 
 
 class Line:
@@ -277,7 +278,7 @@ def gly(g: str | Clazz | Sequence[str | Clazz], suffix: str = "", overwrite=Fals
     return __gly(g) + suffix
 
 
-def gly_seq(g: str | list[str], variant: str):
+def gly_seq(g: str | list[str], variant: Literal['sta', 'mid', 'end']):
     """
     >>> gly_seq("{", "sta")
     "braceleft.sta.seq"

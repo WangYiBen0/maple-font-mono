@@ -1178,9 +1178,22 @@ feature calt {
     ignore sub hyphen' hyphen [less greater hyphen bar];
     ignore sub less [numbersign exclam] hyphen' hyphen;
     ignore sub parenleft @Question less exclam hyphen' hyphen;
+    sub bar SPC hyphen' less @Var by hyphen_hyphen.liga;
+    sub bar hyphen' hyphen less @Var by SPC;
+    sub bar SPC hyphen' @Var by hyphen_hyphen.liga;
+    sub bar hyphen' hyphen @Var by SPC;
     sub SPC hyphen' by hyphen_hyphen.liga;
     sub hyphen' hyphen by SPC;
   } hyphen_hyphen.liga;
+
+  # --
+  lookup hyphen_hyphen.liga__REGEX__ {
+    ignore sub [less greater hyphen exclam] hyphen' hyphen less;
+    sub SPC hyphen' less @Var by hyphen_hyphen.liga;
+    sub hyphen' hyphen less @Var by SPC;
+    sub bar SPC hyphen' @Var by hyphen_hyphen.liga;
+    sub bar hyphen' hyphen @Var by SPC;
+  } hyphen_hyphen.liga__REGEX__;
 
   # >--</
   lookup hyphen_hyphen.liga__ALT__ {
@@ -1247,6 +1260,10 @@ feature calt {
     @HyphenStart = [hyphen.sta.seq hyphen.mid.seq];
     ignore sub less' [exclam numbersign] hyphen hyphen;
     ignore sub bar bar' hyphen;
+    ignore sub bar' hyphen hyphen @Var;
+    ignore sub bar hyphen' hyphen @Var;
+    ignore sub bar' hyphen hyphen less @Var;
+    ignore sub bar hyphen' hyphen less @Var;
     ignore sub hyphen bar' bar;
     ignore sub hyphen hyphen' bar;
     ignore sub parenleft @Question less exclam hyphen' hyphen;
@@ -1501,7 +1518,9 @@ feature calt {
 
   # todo))
   lookup tag_todo_alt {
-    ignore sub @Var @T' @O @D @O parenright parenright;
+    ignore sub [parenleft period period_period.liga period_period_period.liga @Comma colon colon_colon.liga asciitilde greater_hyphen.end.seq greater_hyphen.end.seq.cv01 hyphen_greater.liga hyphen_greater.liga.cv01 ampersand ampersand.cv01 dollar dollar.cv01 hyphen hyphen.end.seq @Var] @T' @O @D @O parenright parenright;
+    ignore sub @T' @O @D @O parenright parenright [semicolon parenright period];
+    ignore sub [colon colon_colon.liga comma] @Space @T' @O @D @O parenright parenright;
     sub SPC SPC SPC SPC SPC parenright' by tag_todo.liga;
     sub SPC SPC SPC SPC parenright' parenright by SPC;
     sub SPC SPC SPC @O' parenright parenright by SPC;
@@ -1512,7 +1531,9 @@ feature calt {
 
   # fixme))
   lookup tag_fixme_alt {
-    ignore sub @Var @F' @I @X @M @E parenright parenright;
+    ignore sub [parenleft period period_period.liga period_period_period.liga @Comma colon colon_colon.liga asciitilde greater_hyphen.end.seq greater_hyphen.end.seq.cv01 hyphen_greater.liga hyphen_greater.liga.cv01 ampersand ampersand.cv01 dollar dollar.cv01 hyphen hyphen.end.seq @Var] @F' @I @X @M @E parenright parenright;
+    ignore sub @F' @I @X @M @E parenright parenright [semicolon parenright period];
+    ignore sub [colon colon_colon.liga comma] @Space @F' @I @X @M @E parenright parenright;
     sub SPC SPC SPC SPC SPC SPC parenright' by tag_fixme.liga;
     sub SPC SPC SPC SPC SPC parenright' parenright by SPC;
     sub SPC SPC SPC SPC @E' parenright parenright by SPC;

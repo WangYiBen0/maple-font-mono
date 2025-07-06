@@ -1,5 +1,5 @@
 import source.py.feature.ast as ast
-from source.py.feature.base.clazz import get_base_class_list, cls_digit
+from source.py.feature.base.clazz import base_class_list, cls_digit
 from source.py.feature.cv import (
     cv01,
     cv02,
@@ -88,38 +88,41 @@ cls_var = ast.Clazz("Var", ["_", "__", *cls_letters_list, cls_digit])
 cls_hex_letter = ast.Clazz("HexLetter", [cls_a, cls_b, cls_c, cls_d, cls_e, cls_f])
 
 class_list_regular = [
-    *get_base_class_list(),
+    *base_class_list,
     *cls_letters_list,
     cls_var,
     cls_hex_letter,
 ]
 
-cv_list_regular = [
-    cv01.cv01_feat_regular,
-    cv02.cv02_feat_regular,
-    cv03.cv03_feat_regular,
-    cv04.cv04_feat_regular,
-    cv05.cv05_feat_regular,
-    cv06.cv06_feat_regular,
-    cv07.cv07_feat_regular,
-    cv08.cv08_feat_regular,
-    cv61.cv61_feat_regular,
-    cv62.cv62_feat_regular,
-    cv63.cv63_feat_regular,
-    cv64.cv64_feat_regular,
-    cv65.cv65_feat_regular,
-]
+
+def cv_list_regular():
+    return [
+        cv01.cv01_feat(),
+        cv02.cv02_feat_regular,
+        cv03.cv03_feat_regular,
+        cv04.cv04_feat_regular,
+        cv05.cv05_feat_regular,
+        cv06.cv06_feat_regular,
+        cv07.cv07_feat_regular,
+        cv08.cv08_feat_regular,
+        cv61.cv61_feat,
+        cv62.cv62_feat,
+        cv63.cv63_feat,
+        cv64.cv64_feat,
+        cv65.cv65_feat,
+    ]
 
 
-ss_list_regular = [
-    ss01.ss01_feat,
-    ss02.ss02_feat,
-    ss03.ss03_feat,
-    ss04.ss04_feat,
-    ss05.ss05_feat,
-    ss07.ss07_feat,
-    ss08.ss08_feat,
-    ss09.ss09_feat,
-    ss10.ss10_feat,
-    ss11.ss11_feat,
-]
+def ss_list_regular():
+    return [
+        ss01.ss01_feat,
+        ss02.ss02_feat,
+        ss03.ss03_feat,
+        ss04.ss04_feat,
+        ss05.ss05_feat,
+        ss07.ss07_feat,
+        ss08.ss08_feat,
+        ss09.ss09_feat,
+        ss10.ss10_feat,
+        ss11.ss11_feat,
+    ]

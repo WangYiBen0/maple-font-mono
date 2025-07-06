@@ -43,7 +43,7 @@ def get_lookup():
             cls_ign_colon,
             cls_ign_markup,
         ),
-        infinite_helper.ignore_when_using(
+        infinite_helper.ignore_when_enabled(
             ast.subst_liga(
                 ":=",
                 ign_prefix=ast.cls(cls_ign_colon, cls_question),

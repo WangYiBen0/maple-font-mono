@@ -75,8 +75,8 @@ def generate_fea_string(
     infinite_helper.set(enable_infinite)
 
     class_list = class_list_italic if is_italic else class_list_regular
-    cv_list = cv_list_italic if is_italic else cv_list_regular
-    ss_list = ss_list_italic if is_italic else ss_list_regular
+    cv_list = cv_list_italic() if is_italic else cv_list_regular()
+    ss_list = ss_list_italic() if is_italic else ss_list_regular()
 
     if class_list[-2].name != "Var" or class_list[-1].name != "HexLetter":
         raise TypeError("Invalid class_list, must ends with [@Var, @HexLetter]")
@@ -144,7 +144,7 @@ def get_all_calt_text():
                 result.append(item.desc.replace("\\ ", "\\\\ "))
             elif item.name.startswith('infinite'):
                 result.extend(item.desc.split(' '))
-            elif not item.name.endswith("__ALT__"):
+            elif not item.name.endswith("__"):
                 result.append(item.desc)
 
     # Split into three columns
@@ -188,12 +188,12 @@ def get_version_info(
 
 def get_cv_desc():
     return "\n".join(
-        [cv.desc_item() for cv in cv_list_regular] + [f"- [v7.0] zero: {zero_desc}"]
+        [cv.desc_item() for cv in cv_list_regular()] + [f"- [v7.0] zero: {zero_desc}"]
     )
 
 
 def get_cv_version_info() -> dict[str, dict[str, str]]:
-    return get_version_info(cv_list_regular)
+    return get_version_info(cv_list_regular())
 
 
 italic_code_pattern = re.compile(r"`([^`]+)`")
@@ -202,14 +202,14 @@ def get_cv_italic_desc():
     return "\n".join(
         [
             italic_code_pattern.sub(r"_`\1`_", cv.desc_item())
-            for cv in cv_list_italic
+            for cv in cv_list_italic()
             if cv.id > 30 and cv.id < 61
         ]
     )
 
 
 def get_cv_italic_version_info() -> dict[str, dict[str, str]]:
-    return get_version_info([cv for cv in cv_list_italic if cv.id > 30 and cv.id < 61])
+    return get_version_info([cv for cv in cv_list_italic() if cv.id > 30 and cv.id < 61])
 
 
 def get_cv_cn_desc():
@@ -222,7 +222,7 @@ def get_cv_cn_version_info() -> dict[str, dict[str, str]]:
 
 def get_ss_desc():
     result = {}
-    for ss in ss_list_regular + ss_list_italic:
+    for ss in ss_list_regular() + ss_list_italic():
         if ss.id not in result:
             desc = ss.desc_item()
 
@@ -237,12 +237,12 @@ def get_ss_desc():
 
 
 def get_ss_version_info() -> dict[str, dict[str, str]]:
-    ss = list({s.tag: s for s in ss_list_regular + ss_list_italic}.values())
+    ss = list({s.tag: s for s in ss_list_regular() + ss_list_italic()}.values())
     return get_version_info(sorted(ss, key=lambda x: x.tag))
 
 
 __total_feat_list = (
-    cv_list_regular + cv_list_italic + cv_list_cn + ss_list_regular + ss_list_italic
+    cv_list_regular() + cv_list_italic() + cv_list_cn + ss_list_regular() + ss_list_italic()
 )
 
 

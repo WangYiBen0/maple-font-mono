@@ -32,7 +32,7 @@ from source.py.feature.ss import (
     ss10,
     ss11,
 )
-from source.py.feature.base.clazz import get_base_class_list, cls_digit
+from source.py.feature.base.clazz import base_class_list, cls_digit
 
 
 cls_a = ast.Clazz("A", ["A", "a", "a.cv31"])
@@ -107,44 +107,48 @@ cls_var = ast.Clazz("Var", ["_", "__", *cls_letters_list, cls_digit])
 cls_hex_letter = ast.Clazz("HexLetter", [cls_a, cls_b, cls_c, cls_d, cls_e, cls_f])
 
 class_list_italic = [
-    *get_base_class_list(),
+    *base_class_list,
     *cls_letters_list,
     a_l,
     cls_var,
     cls_hex_letter,
 ]
 
-cv_list_italic = [
-    cv01.cv01_feat_italic,
-    cv04.cv04_feat_italic,
-    cv31.cv31_feat_italic,
-    cv32.cv32_feat_italic,
-    cv33.cv33_feat_italic,
-    cv34.cv34_feat_italic,
-    cv35.cv35_feat_italic,
-    cv36.cv36_feat_italic,
-    cv37.cv37_feat_italic,
-    cv38.cv38_feat_italic,
-    cv39.cv39_feat_italic,
-    cv40.cv40_feat_italic,
-    cv41.cv41_feat_italic,
-    cv61.cv61_feat_italic,
-    cv62.cv62_feat_italic,
-    cv63.cv63_feat_italic,
-    cv64.cv64_feat_italic,
-    cv65.cv65_feat_italic,
-]
 
-ss_list_italic = [
-    ss01.ss01_feat,
-    ss02.ss02_feat,
-    ss03.ss03_feat,
-    ss04.ss04_feat,
-    ss05.ss05_feat,
-    ss06.ss06_feat,
-    ss07.ss07_feat,
-    ss08.ss08_feat,
-    ss09.ss09_feat,
-    ss10.ss10_feat,
-    ss11.ss11_feat,
-]
+def cv_list_italic():
+    return [
+        cv01.cv01_feat(),
+        cv04.cv04_feat_italic,
+        cv31.cv31_feat_italic,
+        cv32.cv32_feat_italic,
+        cv33.cv33_feat_italic,
+        cv34.cv34_feat_italic,
+        cv35.cv35_feat_italic,
+        cv36.cv36_feat_italic,
+        cv37.cv37_feat_italic,
+        cv38.cv38_feat_italic,
+        cv39.cv39_feat_italic,
+        cv40.cv40_feat_italic,
+        cv41.cv41_feat_italic,
+        cv61.cv61_feat,
+        cv62.cv62_feat,
+        cv63.cv63_feat,
+        cv64.cv64_feat,
+        cv65.cv65_feat,
+    ]
+
+
+def ss_list_italic():
+    return [
+        ss01.ss01_feat,
+        ss02.ss02_feat,
+        ss03.ss03_feat,
+        ss04.ss04_feat,
+        ss05.ss05_feat,
+        ss06.ss06_feat,
+        ss07.ss07_feat,
+        ss08.ss08_feat,
+        ss09.ss09_feat,
+        ss10.ss10_feat,
+        ss11.ss11_feat,
+    ]

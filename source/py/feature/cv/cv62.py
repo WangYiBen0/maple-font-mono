@@ -10,6 +10,6 @@ def cv62_subst():
 
 
 cv62_name = "Alternative `?` with larger openings"
-cv62_feat_regular = cv62_feat_italic = ast.CharacterVariant(
+cv62_feat = ast.CharacterVariant(
     id=62, desc=cv62_name, content=cv62_subst(), version="7.1", example="?"
 )

@@ -13,13 +13,13 @@ class InfiniteHelper:
     def set(self, val: bool):
         self.__USE_INFINITE_ARROW = val
 
-    def ignore_when_using(self, *items: str | ast.Lookup) -> list:
-        if self.__USE_INFINITE_ARROW:
+    def ignore_when_enabled(self, *items: str | ast.Lookup) -> list:
+        if self.get():
             return []
         return items  # type: ignore
 
-    def ignore_when_not_using(self, *items: str | ast.Lookup) -> list:
-        if not self.__USE_INFINITE_ARROW:
+    def ignore_when_disabled(self, *items: str | ast.Lookup) -> list:
+        if not self.get():
             return []
         return items  # type: ignore
 

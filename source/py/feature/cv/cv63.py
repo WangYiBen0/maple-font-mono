@@ -11,6 +11,6 @@ def cv63_subst():
 
 
 cv63_name = "Alternative `<=` in arrow style"
-cv63_feat_regular = cv63_feat_italic = ast.CharacterVariant(
+cv63_feat = ast.CharacterVariant(
     id=63, desc=cv63_name, content=cv63_subst(), version="7.1", example="<="
 )

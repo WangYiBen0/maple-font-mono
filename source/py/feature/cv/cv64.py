@@ -11,6 +11,6 @@ def cv64_subst():
 
 
 cv64_name = "Alternative `<=` and `>=` with horizen bottom bar"
-cv64_feat_regular = cv64_feat_italic = ast.CharacterVariant(
+cv64_feat = ast.CharacterVariant(
     id=64, desc=cv64_name, content=cv64_subst(), version="7.3", example="<="
 )

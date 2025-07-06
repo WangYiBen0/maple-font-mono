@@ -34,7 +34,7 @@ def cv01_subst():
                 "<!--",
                 "<#--",
                 "xml_empty_comment.liga",  # <!---->
-                *infinite_helper.ignore_when_using(
+                *infinite_helper.ignore_when_enabled(
                     "=>",
                     "<==",
                     "==>",
@@ -52,17 +52,20 @@ def cv01_subst():
                     ">->",
                     "<->",
                 ),
-                ast.gly_seq("<=", "sta"),
-                ast.gly_seq(">=", "end"),
-                ast.gly_seq("<-", "sta"),
-                ast.gly_seq(">-", "end"),
+                *infinite_helper.ignore_when_disabled(
+                    ast.gly_seq("<=", "sta"),
+                    ast.gly_seq(">=", "end"),
+                    ast.gly_seq("<-", "sta"),
+                    ast.gly_seq(">-", "end"),
+                ),
             ],
             target_suffix=sfx,
         ),
     ]
 
 
-cv01_desc = "Normalize special symbols (`@ $ & % Q => ->`)"
-cv01_feat_regular = cv01_feat_italic = ast.CharacterVariant(
-    id=1, desc=cv01_desc, content=cv01_subst(), version="7.0", example="@$&"
-)
+def cv01_feat():
+    cv01_desc = "Normalize special symbols (`@ $ & % Q => ->`)"
+    return ast.CharacterVariant(
+        id=1, desc=cv01_desc, content=cv01_subst(), version="7.0", example="@$&"
+    )

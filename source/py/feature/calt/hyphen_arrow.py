@@ -5,7 +5,7 @@ from source.py.feature.calt._infinite_utils import infinite_helper, infinite_rul
 
 # Inspirde by Fira Code, source:
 # https://github.com/tonsky/FiraCode/blob/master/features/calt/hyphen_arrows.fea
-def infinite_hyphens():
+def infinite_hyphens(cls_var: ast.Clazz):
     if not infinite_helper.get():
         return None
 
@@ -38,6 +38,10 @@ def infinite_hyphens():
             cls_start.state(),
             ast.ign(None, "<", [ast.cls("!", "#"), "-", "-"]),
             ast.ign("|", "|", "-"),
+            ast.ign(None, "|", ["-", "-", cls_var]),
+            ast.ign("|", "-", ["-", cls_var]),
+            ast.ign(None, "|", ["-", "-", "<", cls_var]),
+            ast.ign("|", "-", ["-", "<", cls_var]),
             ast.ign("-", "|", "|"),
             ast.ign("-", "-", "|"),
             ast.ign(["(", cls_question, "<", "!"], "-", "-"),
@@ -90,7 +94,7 @@ def infinite_hyphens():
     )
 
 
-def get_lookup():
+def get_lookup(cls_var: ast.Clazz):
     return [
         ast.subst_liga(
             "--",
@@ -104,8 +108,24 @@ def get_lookup():
                     "-",
                 ),
             ],
+            surround=[
+                (None, None),
+                ("|", [cls_var]),
+                ("|", ["<", cls_var]),
+            ]
         ),
-        infinite_helper.ignore_when_not_using(
+        ast.subst_liga(
+            "--",
+            lookup_name=ast.gly("--", "__REGEX__"),
+            extra_rules=[
+                ast.ign(ast.cls("<", ">", "-", "!"), "-", ["-", "<"])
+            ],
+            surround=[
+                ("|", [cls_var]),
+                (None, ["<", cls_var]),
+            ]
+        ),
+        infinite_helper.ignore_when_disabled(
             ast.subst_liga(
                 "--",
                 lookup_name=ast.gly("--", "__ALT__"),
@@ -124,7 +144,7 @@ def get_lookup():
                 ast.ign("<", "-", ["-", "-", ">"]),
             ],
         ),
-        infinite_helper.ignore_when_not_using(
+        infinite_helper.ignore_when_disabled(
             ast.subst_liga(
                 "---",
                 lookup_name=ast.gly("---", "__ALT__"),
@@ -149,7 +169,7 @@ def get_lookup():
             ign_suffix="-",
         ),
         ast.subst_liga("<!---->", target="xml_empty_comment.liga"),
-        infinite_helper.ignore_when_using(
+        infinite_helper.ignore_when_enabled(
             ast.subst_liga(
                 "<->",
                 ign_prefix=ast.cls("<", "-"),
@@ -196,5 +216,5 @@ def get_lookup():
                 ign_suffix=ast.cls(">", "-"),
             ),
         ),
-        infinite_hyphens(),
+        infinite_hyphens(cls_var),
     ]
